@@ -575,7 +575,7 @@ var P_FALLBACK = {
   JULIO:      {SINGLE:{Suite:110000,Standard:93000,"Standard Mini":86000,Economica:76000},DOBLE:{Suite:157000,Standard:135000,"Standard Mini":124000,Economica:113000},TRIPLE:{"Suite Familiar":164000,Standard:153000,Economica:130000},CUADRUPLE:{Departamento:178000,"Suite Familiar":173000,Standard:169000},QUINTUPLE:{Departamento:184000,"Suite Familiar":179000}},
   AGOSTO:     {SINGLE:{Suite:113000,Standard:95000,"Standard Mini":88000,Economica:78000},DOBLE:{Suite:161000,Standard:138000,"Standard Mini":127000,Economica:116000},TRIPLE:{"Suite Familiar":168000,Standard:157000,Economica:133000},CUADRUPLE:{Departamento:182000,"Suite Familiar":177000,Standard:173000},QUINTUPLE:{Departamento:189000,"Suite Familiar":183000}}
 };
-var P = JSON.parse(JSON.stringify(P_FALLBACK));
+var P = (function(){var o={};['MAYO','JUNIO','JULIO','AGOSTO'].forEach(function(m){if(P_FALLBACK[m])o[m]=JSON.parse(JSON.stringify(P_FALLBACK[m]));});return o;})();
 
 // ============================================================
 // CONSTANTES
@@ -1002,6 +1002,8 @@ function parsearPreciosDeMes(filas, mesRow) {
   return resultado;
 }
 
+var MESES_VALIDOS = ['MAYO','JUNIO','JULIO','AGOSTO']; // meses con tarifas vigentes
+
 async function cargarPreciosDesdeHoja() {
   try {
     var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Tarifas';
@@ -1010,24 +1012,38 @@ async function cargarPreciosDesdeHoja() {
     var texto = await resp.text();
     var filas = parsearCSV(texto);
 
-    var nombresMeses = ['MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE'];
     var nuevosPrecios = {};
     var encontrados = 0;
 
-    for (var mi=0; mi<nombresMeses.length; mi++) {
-      var nm = nombresMeses[mi];
+    for (var mi=0; mi<MESES_VALIDOS.length; mi++) {
+      var nm = MESES_VALIDOS[mi];
       var mRow = -1;
       for (var i=0; i<filas.length; i++) {
         if (filas[i][0] && filas[i][0].trim().toUpperCase() === nm) { mRow = i; break; }
       }
       if (mRow === -1) continue;
-      nuevosPrecios[nm] = parsearPreciosDeMes(filas, mRow);
+      var parsed = parsearPreciosDeMes(filas, mRow);
+
+      // Fallback: si DOBLE quedó vacío, copiar de SINGLE (mismos precios base)
+      if (!parsed.DOBLE || Object.keys(parsed.DOBLE).length === 0) {
+        parsed.DOBLE = JSON.parse(JSON.stringify(parsed.SINGLE));
+      }
+      // Fallback: si CUÁDRUPLE/QUINTUPLE vacíos, usar datos del fallback
+      var fb = P_FALLBACK[nm] || {};
+      if (!parsed.CUADRUPLE || Object.keys(parsed.CUADRUPLE).length === 0) {
+        parsed.CUADRUPLE = fb.CUADRUPLE ? JSON.parse(JSON.stringify(fb.CUADRUPLE)) : {};
+      }
+      if (!parsed.QUINTUPLE || Object.keys(parsed.QUINTUPLE).length === 0) {
+        parsed.QUINTUPLE = fb.QUINTUPLE ? JSON.parse(JSON.stringify(fb.QUINTUPLE)) : {};
+      }
+
+      nuevosPrecios[nm] = parsed;
       encontrados++;
     }
 
     if (encontrados > 0) {
       if (nuevosPrecios.MAYO && nuevosPrecios.MAYO.SINGLE && nuevosPrecios.MAYO.SINGLE.Suite > 50000) {
-        P = nuevosPrecios;
+        P = nuevosPrecios; // only MESES_VALIDOS — Sep/Oct/Nov excluded automatically
         actuCard();
         poblarMesesPrecios();
         refCard();
@@ -1037,6 +1053,11 @@ async function cargarPreciosDesdeHoja() {
     throw new Error('Datos no reconocidos');
   } catch(e) {
     console.warn('No se pudo cargar la hoja:', e.message);
+    // Ensure fallback also only has MESES_VALIDOS
+    var pFilt = {};
+    MESES_VALIDOS.forEach(function(m){ if(P_FALLBACK[m]) pFilt[m]=P_FALLBACK[m]; });
+    P = pFilt;
+    poblarMesesPrecios();
   }
 }
 
