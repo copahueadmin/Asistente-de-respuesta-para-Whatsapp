@@ -53,6 +53,7 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 .inp{border:1.5px solid #bec2b8;border-radius:7px;padding:clamp(5px,0.5vw,8px) 10px;font-family:'Outfit',sans-serif;font-size:clamp(12px,0.95vw,14px);color:#0f1e14;font-weight:500;width:100%;outline:none;background:#d6dbd2;transition:border-color .15s}
 .inp:focus{border-color:#2d6148}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
 /* PRECIO CARD */
 .pc{background:linear-gradient(135deg,#1e4030,#2d6148);border-radius:9px;padding:11px 13px}
@@ -76,6 +77,12 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 .btn-g::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--bx,50%) var(--by,50%),rgba(180,210,255,.35) 0%,transparent 62%);opacity:0;transition:opacity .18s;pointer-events:none;border-radius:inherit}
 .btn-g:hover{background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);box-shadow:0 4px 20px rgba(30,64,48,.5)}
 .btn-g:hover::after{opacity:1}
+.doble-btn{background:#e4e7e0;border:1.5px solid #bec2b8;border-radius:6px;padding:5px 9px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:#4a6a54;transition:all .12s}
+.doble-btn:hover{border-color:#1e4030;color:#1e4030}
+.doble-btn.active{background:#1e4030;border-color:#1e4030;color:#fff}
+html.dark .doble-btn{background:#1a1828;border-color:#2e2c28;color:#9a9890}
+html.dark .doble-btn:hover{border-color:#4a7a5e;color:#eae8e2}
+html.dark .doble-btn.active{background:#1e2e1a;border-color:#4a7a5e;color:#c8e8c0}
 .btn-mini{background:transparent;border:1.5px solid #b2d4bf;border-radius:6px;padding:3px 8px;font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;cursor:pointer;color:#1e4030;transition:all .12s}
 .btn-mini:hover{background:#e4f0ea}
 
@@ -297,7 +304,7 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
         </div>
         <div>
           <span class="lbl">Personas</span>
-          <select class="inp" id="p-ocup" onchange="onOcup()">
+          <select class="inp" id="p-ocup" onchange="onOcup();toggleDobleBtns('p')">
             <option value="">— Elegir —</option>
             <option value="SINGLE">1 (Single)</option>
             <option value="DOBLE">2 (Doble)</option>
@@ -305,6 +312,13 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
             <option value="CUADRUPLE">4 (Cuádruple)</option>
             <option value="QUINTUPLE">5 (Quíntuple)</option>
           </select>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <span class="lbl" style="visibility:hidden">.</span>
+          <div id="p-doble-btns" style="display:none;gap:5px;width:100%">
+            <button class="doble-btn active" id="p-btn-m" onclick="setDobleTipo('p','m')" title="Doble Matrimonial" style="flex:1;padding:7px 4px;font-size:10.5px">Mat.</button>
+            <button class="doble-btn" id="p-btn-t" onclick="setDobleTipo('p','t')" title="Doble Twin" style="flex:1;padding:7px 4px;font-size:10.5px">Twin</button>
+          </div>
         </div>
       </div>
       <div>
@@ -348,14 +362,20 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       </div>
       <div>
         <span class="lbl">Personas</span>
-        <select class="inp" id="d-ocup" onchange="poblarCatsDisp()">
-          <option value="">— Elegir —</option>
-          <option value="SINGLE">1 (Single)</option>
-          <option value="DOBLE">2 (Doble)</option>
-          <option value="TRIPLE">3 (Triple)</option>
-          <option value="CUADRUPLE">4 (Cuádruple)</option>
-          <option value="QUINTUPLE">5 (Quíntuple)</option>
-        </select>
+<div style="display:flex;gap:6px;align-items:center">
+          <select class="inp" id="d-ocup" onchange="poblarCatsDisp();toggleDobleBtns('d')" style="flex:1">
+            <option value="">— Elegir —</option>
+            <option value="SINGLE">1 (Single)</option>
+            <option value="DOBLE">2 (Doble)</option>
+            <option value="TRIPLE">3 (Triple)</option>
+            <option value="CUADRUPLE">4 (Cuádruple)</option>
+            <option value="QUINTUPLE">5 (Quíntuple)</option>
+          </select>
+          <div id="d-doble-btns" style="display:none;gap:4px;flex-shrink:0">
+            <button class="doble-btn active" id="d-btn-m" onclick="setDobleTipo('d','m')" title="Doble Matrimonial">M</button>
+            <button class="doble-btn" id="d-btn-t" onclick="setDobleTipo('d','t')" title="Doble Twin">T</button>
+          </div>
+        </div>
       </div>
       <div class="g2">
         <div>
@@ -575,35 +595,40 @@ var P_FALLBACK = {
     DOBLE:{Suite:151000,Standard:131000,"Standard Mini":119000,Economica:109000},
     TRIPLE:{"Suite Familiar":158000,Standard:147000,Economica:125000},
     CUADRUPLE:{Departamento:171000,"Suite Familiar":166000,Standard:161000},
-    QUINTUPLE:{Departamento:176000,"Suite Familiar":172000}
+    QUINTUPLE:{Departamento:176000,"Suite Familiar":172000},
+    DOBLE_TWIN:{Suite:151000,Standard:140000,"Standard Mini":119000,Economica:109000}
   },
   JUNIO:{
     SINGLE:{Suite:108000,Standard:91000,"Standard Mini":84000,Economica:74000},
     DOBLE:{Suite:154000,Standard:133000,"Standard Mini":122000,Economica:111000},
     TRIPLE:{"Suite Familiar":161000,Standard:150000,Economica:127000},
     CUADRUPLE:{Departamento:175000,"Suite Familiar":170000,Standard:165000},
-    QUINTUPLE:{Departamento:180000,"Suite Familiar":175000}
+    QUINTUPLE:{Departamento:180000,"Suite Familiar":175000},
+    DOBLE_TWIN:{Suite:154000,Standard:142000,"Standard Mini":122000,Economica:111000}
   },
   JULIO:{
     SINGLE:{Suite:110000,Standard:93000,"Standard Mini":86000,Economica:76000},
     DOBLE:{Suite:157000,Standard:135000,"Standard Mini":124000,Economica:113000},
     TRIPLE:{"Suite Familiar":164000,Standard:153000,Economica:130000},
     CUADRUPLE:{Departamento:178000,"Suite Familiar":173000,Standard:169000},
-    QUINTUPLE:{Departamento:184000,"Suite Familiar":179000}
+    QUINTUPLE:{Departamento:184000,"Suite Familiar":179000},
+    DOBLE_TWIN:{Suite:157000,Standard:145000,"Standard Mini":124000,Economica:113000}
   },
   AGOSTO:{
     SINGLE:{Suite:113000,Standard:95000,"Standard Mini":88000,Economica:78000},
     DOBLE:{Suite:161000,Standard:138000,"Standard Mini":127000,Economica:116000},
     TRIPLE:{"Suite Familiar":168000,Standard:157000,Economica:133000},
     CUADRUPLE:{Departamento:182000,"Suite Familiar":177000,Standard:173000},
-    QUINTUPLE:{Departamento:189000,"Suite Familiar":183000}
+    QUINTUPLE:{Departamento:189000,"Suite Familiar":183000},
+    DOBLE_TWIN:{Suite:161000,Standard:149000,"Standard Mini":127000,Economica:116000}
   },
   SEPTIEMBRE:{
     SINGLE:{Suite:116000,Standard:97000,"Standard Mini":90000,Economica:80000},
     DOBLE:{Suite:165000,Standard:141000,"Standard Mini":130000,Economica:119000},
     TRIPLE:{"Suite Familiar":172000,Standard:161000,Economica:136000},
     CUADRUPLE:{Departamento:187000,"Suite Familiar":181000,Standard:177000},
-    QUINTUPLE:{Departamento:194000,"Suite Familiar":188000}
+    QUINTUPLE:{Departamento:194000,"Suite Familiar":188000},
+    DOBLE_TWIN:{Suite:165000,Standard:153000,"Standard Mini":130000,Economica:119000}
   }
 };
 var P = (function(){var o={};['MAYO','JUNIO','JULIO','AGOSTO'].forEach(function(m){if(P_FALLBACK[m])o[m]=JSON.parse(JSON.stringify(P_FALLBACK[m]));});return o;})();
@@ -616,7 +641,9 @@ var MESES_ES = {ENERO:"Enero",FEBRERO:"Febrero",MARZO:"Marzo",ABRIL:"Abril",MAYO
 var MESES_ORD = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
 var ME = {MAYO:"Mayo",JUNIO:"Junio",JULIO:"Julio",AGOSTO:"Agosto",SEPTIEMBRE:"Septiembre",OCTUBRE:"Octubre",NOVIEMBRE:"Noviembre"};
 function meLabel(key,anio){ return (MESES_ES[key]||ME[key]||key)+' '+(anio||$('p-anio')&&$('p-anio').value||''); }
-var OE = {SINGLE:"1 persona",DOBLE:"2 personas",TRIPLE:"3 personas",CUADRUPLE:"4 personas",QUINTUPLE:"5 personas"};
+var OE = {SINGLE:"1 persona",DOBLE:"2 personas (Doble Matrimonial)",DOBLE_TWIN:"2 personas (Doble Twin)",TRIPLE:"3 personas",CUADRUPLE:"4 personas",QUINTUPLE:"5 personas"};
+var OE_EN = {SINGLE:"1 guest",DOBLE:"2 guests (Double)",DOBLE_TWIN:"2 guests (Twin)",TRIPLE:"3 guests",CUADRUPLE:"4 guests",QUINTUPLE:"5 guests"};
+var OE_PT = {SINGLE:"1 hóspede",DOBLE:"2 hóspedes (Duplo)",DOBLE_TWIN:"2 hóspedes (Twin)",TRIPLE:"3 hóspedes",CUADRUPLE:"4 hóspedes",QUINTUPLE:"5 hóspedes"};
 var CAMAS = {
   SINGLE: {
     "Suite":          "Sommier Queen",
@@ -654,12 +681,13 @@ var CAMAS = {
   }
 };
 function getCamas(ocup, cat) {
+  var camKey = ocup==="DOBLE_TWIN" ? "DOBLE_TWIN" : ocup;
   var tr = TR[_lang];
   if (tr && tr.camasData) {
-    var tbl = tr.camasData[ocup] || tr.camasData['DOBLE'];
+    var tbl = tr.camasData[camKey] || tr.camasData['DOBLE'];
     if (tbl && tbl[cat]) return ' _('+tbl[cat]+')_';
   }
-  var tbl2 = CAMAS[ocup] || CAMAS['DOBLE'];
+  var tbl2 = CAMAS[camKey] || CAMAS['DOBLE'];
   return tbl2 && tbl2[cat] ? ' _('+tbl2[cat]+')_' : '';
 }
 var CL = {Economica:"Económica"};
@@ -692,6 +720,7 @@ function saveFormSnapshot() {
     var key = (el.id||'') + '|' + el.className + '|' + el.value;
     snap.checkboxes[key] = el.checked;
   });
+  snap.dobleTipo = { p: _dobleTipo.p, d: _dobleTipo.d };
   _formSnapshot = snap;
 }
 
@@ -705,6 +734,22 @@ function restoreAndRegen() {
     var el = $(id);
     if (el) el.value = snap.inputs[id];
   });
+
+  // Restore dobleTipo state
+  if (snap.dobleTipo) {
+    _dobleTipo.p = snap.dobleTipo.p;
+    _dobleTipo.d = snap.dobleTipo.d;
+    toggleDobleBtns('p');
+    toggleDobleBtns('d');
+    if ($('p-btn-m')) {
+      $('p-btn-m').className = 'doble-btn' + (_dobleTipo.p==='m' ? ' active' : '');
+      $('p-btn-t').className = 'doble-btn' + (_dobleTipo.p==='t' ? ' active' : '');
+    }
+    if ($('d-btn-m')) {
+      $('d-btn-m').className = 'doble-btn' + (_dobleTipo.d==='m' ? ' active' : '');
+      $('d-btn-t').className = 'doble-btn' + (_dobleTipo.d==='t' ? ' active' : '');
+    }
+  }
 
   // Trigger dynamic repopulation based on section
   var sec = snap.sec;
@@ -846,6 +891,7 @@ var TR = {
       "Economica": "Economy", "Suite Familiar": "Family Suite", "Departamento": "Apartment"
     },
     camasData: {
+      DOBLE_TWIN:{"Suite":"2 Double beds with balcony","Standard":"2 Double beds","Standard Mini":"2 Single beds","Economica":"2 Single beds"},
       SINGLE:    {"Suite":"Queen bed","Standard":"Double bed","Standard Mini":"Double bed","Economica":"Double bed","Suite Familiar":"Double bed with balcony"},
       DOBLE:     {"Suite":"Queen bed","Standard":"Double bed","Standard Mini":"Double bed","Economica":"Double bed","Suite Familiar":"Double bed with balcony"},
       TRIPLE:    {"Suite Familiar":"2 Double beds with balcony","Standard":"1 Double bed + 1 Single bed","Economica":"1 Double bed + 1 Single bed"},
@@ -917,6 +963,7 @@ var TR = {
       "Economica": "Econômica", "Suite Familiar": "Suíte Familiar", "Departamento": "Apartamento"
     },
     camasData: {
+      DOBLE_TWIN:{"Suite":"2 Sommiers de Casal com varanda","Standard":"2 Sommiers de Casal","Standard Mini":"2 Sommiers Individuais","Economica":"2 Sommiers Individuais"},
       SINGLE:    {"Suite":"Sommier Queen","Standard":"Sommier de Casal","Standard Mini":"Sommier de Casal","Economica":"Sommier de Casal","Suite Familiar":"Sommier de Casal com varanda"},
       DOBLE:     {"Suite":"Sommier Queen","Standard":"Sommier de Casal","Standard Mini":"Sommier de Casal","Economica":"Sommier de Casal","Suite Familiar":"Sommier de Casal com varanda"},
       TRIPLE:    {"Suite Familiar":"2 Sommiers de Casal com varanda","Standard":"1 Sommier de Casal + 1 Individual","Economica":"1 Sommier de Casal + 1 Individual"},
@@ -965,6 +1012,7 @@ var TR = {
   }
 };
 function t(key){ var r=TR[_lang]; return r&&r[key]!==undefined?r[key]:TR['es'][key]; }
+function oe(o){ if(_lang==='en' && OE_EN[o]) return OE_EN[o]; if(_lang==='pt' && OE_PT[o]) return OE_PT[o]; return OE[o]||o; }
 function tFn(key){ var r=TR[_lang]; return (r&&r[key])||TR['es'][key]; }
 // ============================================================
 function parsearCSV(texto) {
@@ -1182,14 +1230,43 @@ function onMes() {
   actuCard();
   refCard();
 }
+// T/M toggle for doble
+var _dobleTipo = { p: 'm', d: 'm' }; // 'm'=matrimonial, 't'=twin
+
+function toggleDobleBtns(prefix) {
+  var ocup = val(prefix+'-ocup');
+  var btns = $(prefix+'-doble-btns');
+  if (ocup === 'DOBLE') {
+    btns.style.display = 'flex';
+  } else {
+    btns.style.display = 'none';
+    _dobleTipo[prefix] = 'm'; // reset
+  }
+}
+
+function setDobleTipo(prefix, tipo) {
+  _dobleTipo[prefix] = tipo;
+  $(prefix+'-btn-m').className = 'doble-btn' + (tipo==='m'?' active':'');
+  $(prefix+'-btn-t').className = 'doble-btn' + (tipo==='t'?' active':'');
+  if (prefix==='p') { poblarCatsPrecios(); actuCard(); refCard(); }
+  else { poblarCatsDisp(); }
+}
+
+function getOcupEfectivo(prefix) {
+  var o = val(prefix+'-ocup');
+  if (o === 'DOBLE' && _dobleTipo[prefix] === 't') return 'DOBLE_TWIN';
+  return o;
+}
+
 function onOcup() { poblarCatsPrecios(); actuCard(); refCard(); }
 
 function getCatsMes(m, o) {
   var anioSel = $('p-anio') ? parseInt($('p-anio').value) : ANIO_TARIFAS;
   if (anioSel !== ANIO_TARIFAS) return [];
-  if (!m||!o||!P[m]||!P[m][o]) return [];
-  var cats = Object.keys(P[m][o]);
-  // Suite Familiar usa el precio de Suite en base Single/Doble
+  var ocupKey = o==="DOBLE_TWIN" ? "DOBLE_TWIN" : o;
+  if (!m||!P[m]||!P[m][ocupKey]) return [];
+  var cats = Object.keys(P[m][ocupKey]);
+  // Suite Familiar usa el precio de Suite en base Single/Doble (no en Twin)
   if ((o==="SINGLE"||o==="DOBLE") && cats.indexOf("Suite Familiar")===-1 && cats.indexOf("Suite")>=0) {
     cats.push("Suite Familiar");
   }
@@ -1201,7 +1278,7 @@ function esFindeRelevante(o) {
 }
 
 function poblarCatsPrecios() {
-  var m=val("p-mes"), o=val("p-ocup");
+  var m=val("p-mes"), o=getOcupEfectivo("p");
   var wrap = $("p-cats-wrap");
   wrap.innerHTML = "";
   var findeWrap = $("p-finde-wrap");
@@ -1232,7 +1309,7 @@ function poblarCatsPrecios() {
 }
 
 function actualizarFinde() {
-  var o = val("p-ocup");
+  var o = getOcupEfectivo("p");
   var findeWrap = $("p-finde-wrap");
   if (o !== "SINGLE") { findeWrap.style.display = "none"; return; }
   var chks = document.querySelectorAll(".p-chk:checked");
@@ -1245,10 +1322,10 @@ function actualizarFinde() {
 }
 
 function selTodasCats(val_) {
-  var o = val("p-ocup");
+  var o = getOcupEfectivo("p");
   document.querySelectorAll(".p-chk").forEach(function(c){
     // No marcar Suite Familiar automáticamente en Single/Doble
-    if (val_ && (o==="SINGLE"||o==="DOBLE") && c.value==="Suite Familiar") return;
+    if (val_ && (o==="SINGLE"||o==="DOBLE"||o==="DOBLE_TWIN") && c.value==="Suite Familiar") return;
     c.checked = val_;
   });
   actuCard();
@@ -1263,11 +1340,12 @@ function getPCatsSeleccionadas() {
 }
 
 function getPrecioEfectivo(m, o, c) {
-  if (!P[m]||!P[m][o]) return null;
-  var pn = P[m][o][c];
+  var ocupKey = o==="DOBLE_TWIN" ? "DOBLE_TWIN" : o;
+  if (!P[m]||!P[m][ocupKey]) return null;
+  var pn = P[m][ocupKey][c];
   // Suite Familiar en SINGLE/DOBLE no tiene precio propio → usar precio de Suite
-  if (!pn && (o==="SINGLE"||o==="DOBLE") && c==="Suite Familiar" && P[m][o]["Suite"]) {
-    pn = P[m][o]["Suite"];
+  if (!pn && (o==="SINGLE"||o==="DOBLE") && c==="Suite Familiar" && P[m][ocupKey]["Suite"]) {
+    pn = P[m][ocupKey]["Suite"];
   }
   if (!pn) return null;
   if (o==="SINGLE" && (c==="Suite"||c==="Suite Familiar")) {
@@ -1280,7 +1358,7 @@ function getPrecioEfectivo(m, o, c) {
 }
 
 function actuCard() {
-  var m=val("p-mes"), o=val("p-ocup"), n=parseInt(val("p-noches"))||1;
+  var m=val("p-mes"), o=getOcupEfectivo("p"), n=parseInt(val("p-noches"))||1;
   var card = $("p-card");
   var cats = getPCatsSeleccionadas();
 
@@ -1302,7 +1380,7 @@ function actuCard() {
 function genPrecios() {
   resetLangToES();
   _lastGen = genPrecios;
-  var m=val("p-mes"), o=val("p-ocup"), n=parseInt(val("p-noches"))||1;
+  var m=val("p-mes"), o=getOcupEfectivo("p"), n=parseInt(val("p-noches"))||1;
   var cats = getPCatsSeleccionadas();
   // Suite Familiar siempre primera si está seleccionada
   cats = cats.slice().sort(function(a,b){
@@ -1442,10 +1520,10 @@ function refCard() {
 // DISPONIBILIDAD
 // ============================================================
 function selTodasDisp() {
-  var ocup = val("d-ocup");
+  var ocup = getOcupEfectivo("d");
   document.querySelectorAll(".d-chk").forEach(function(c) {
     // Suite Familiar en single/doble se omite del "todas"
-    if ((ocup==="SINGLE"||ocup==="DOBLE") && c.value==="Suite Familiar") return;
+    if ((ocup==="SINGLE"||ocup==="DOBLE"||ocup==="DOBLE_TWIN") && c.value==="Suite Familiar") return;
     c.checked = true;
   });
 }
@@ -1820,7 +1898,7 @@ document.addEventListener("click", function(e) {
 });
 
 function poblarCatsDisp() {
-  var ocup = val("d-ocup");
+  var ocup = getOcupEfectivo("d");
   var wrap = $("d-cats-wrap");
   wrap.innerHTML = "";
   var cats = [];
@@ -1829,6 +1907,7 @@ function poblarCatsDisp() {
     return;
   }
   if (ocup==="SINGLE"||ocup==="DOBLE") cats=["Suite","Standard","Standard Mini","Economica","Suite Familiar"];
+  else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard","Standard Mini","Economica"];
   else if (ocup==="TRIPLE") cats=["Suite Familiar","Standard","Economica"];
   else if (ocup==="CUADRUPLE") cats=["Suite Familiar","Departamento","Standard"];
   else if (ocup==="QUINTUPLE") cats=["Suite Familiar","Departamento"];
@@ -1866,7 +1945,7 @@ function getMesRef(mesKey, ocup) {
 function genDisp() {
   resetLangToES();
   _lastGen = genDisp;
-  var ocup=val("d-ocup");
+  var ocup=getOcupEfectivo("d");
   var inV=val("d-in").trim(), outV=val("d-out").trim();
   var chks=document.querySelectorAll(".d-chk:checked");
   if (!ocup){ mostrar("⚠️ Seleccioná la cantidad de personas.","err"); return; }
@@ -2198,7 +2277,9 @@ function limpiarForm() {
   document.querySelectorAll("select").forEach(function(s){ s.selectedIndex=0; });
   document.querySelectorAll(".p-chk,.d-chk").forEach(function(c){ c.checked=false; });
   document.querySelectorAll(".s-chk").forEach(function(c){ c.checked=true; var r=c.closest("label"); if(r)r.className="chk-row ck"; });
-  if($("p-finde"))$("p-finde").checked=false;
+  if($("p-doble-btns")) $("p-doble-btns").style.display="none";
+  _dobleTipo.p = 'm';
+  if($("p-btn-m")){ $("p-btn-m").className="doble-btn active"; $("p-btn-t").className="doble-btn"; }
   if($("ci-late-chk"))$("ci-late-chk").checked=false;
   $("ci-late-info").style.display="none";
   $("p-card").style.display="none";
