@@ -631,7 +631,7 @@ var P_FALLBACK = {
     DOBLE_TWIN:{Suite:165000,Standard:153000,"Standard Mini":130000,Economica:119000}
   }
 };
-var P = (function(){var o={};['MAYO','JUNIO','JULIO','AGOSTO'].forEach(function(m){if(P_FALLBACK[m])o[m]=JSON.parse(JSON.stringify(P_FALLBACK[m]));});return o;})();
+var P = JSON.parse(JSON.stringify(P_FALLBACK));
 
 // ============================================================
 // CONSTANTES
@@ -1187,11 +1187,12 @@ var ANIO_TARIFAS = 2026; // año al que corresponden los precios cargados
 
 function tienePreciosMes(mesKey) {
   var anioSel = $('p-anio') ? parseInt($('p-anio').value) : ANIO_TARIFAS;
-  if (anioSel !== ANIO_TARIFAS) return false; // otro año → sin tarifas
-  if (!P[mesKey]) return false;
-  var ocups = Object.keys(P[mesKey]);
+  if (anioSel !== ANIO_TARIFAS) return false;
+  // Tiene precios si está en P_FALLBACK con datos
+  if (!P_FALLBACK[mesKey]) return false;
+  var ocups = Object.keys(P_FALLBACK[mesKey]);
   for (var i=0; i<ocups.length; i++) {
-    if (Object.keys(P[mesKey][ocups[i]]).length > 0) return true;
+    if (Object.keys(P_FALLBACK[mesKey][ocups[i]]).length > 0) return true;
   }
   return false;
 }
@@ -1428,9 +1429,12 @@ function genPrecios() {
   }
 
   txt += "\n\n"+t('iva')+"\n";
+  txt += getCheckInOutTexto(null)+"\n";
+  txt += getCocheraTexto(m)+"\n";
   txt += t('sujetoDisp')+"\n";
   txt += getDescuentos();
   txt += getFooter();
+  txt += "\n\n"+getWebTexto();
   txt += "\n\n"+t('cierre');
 
   mostrar(txt,"ok");
@@ -1456,8 +1460,14 @@ function buildRefTabs(activeMes) {
   var tabs = $('ref-tabs');
   tabs.innerHTML = '';
   var primerMes = null;
-  MESES_ORD.forEach(function(m) {
+  var hoyRef = new Date(); hoyRef.setHours(0,0,0,0);
+  var anioActualRef = hoyRef.getFullYear();
+  var mesActualRef = hoyRef.getMonth();
+  MESES_ORD.forEach(function(m, idx) {
     if (!tienePreciosMes(m)) return; // solo mostrar meses con tarifas
+    // Ocultar meses pasados del año actual
+    var anioSel = $('p-anio') ? parseInt($('p-anio').value) : ANIO_TARIFAS;
+    if (anioSel === anioActualRef && idx < mesActualRef) return;
     if (!primerMes) primerMes = m;
     var btn = document.createElement('button');
     btn.textContent = (MESES_ES[m]||m).substring(0,3);
@@ -2033,9 +2043,12 @@ function genDisp() {
 
   txt+=t('iva')+"\n";
   if (esOrientativo) txt+=tFn('orientativoNota')(ME[refIn.mes]||MESES_ES[refIn.mes]||refIn.mes)+"\n";
+  txt+=getCheckInOutTexto(dOut)+"\n";
+  txt+=getCocheraTexto(refIn.mes||mesInKey)+"\n";
   txt+=t('sujetoDispDisp')+"\n";
   txt+=getDescuentos();
   txt+=getFooter();
+  txt+="\n\n"+getWebTexto();
   txt+="\n\n"+t('cierreDisp');
 
   mostrar(txt,"ok");
@@ -2247,6 +2260,51 @@ function genNodisponibilidad() {
   mostrar(txt, 'ok');
 }
 // ============================================================
+function getCocheraTexto(mesKey) {
+  var mesesAlta = ['OCTUBRE','NOVIEMBRE','DICIEMBRE','ENERO'];
+  var precioAuto = mesesAlta.indexOf(mesKey) >= 0 ? '$14.000' : '$13.000';
+  var precioMoto = mesesAlta.indexOf(mesKey) >= 0 ? '$11.000' : '$10.000';
+  if (_lang === 'en') return '🅿️ Parking available at an additional cost: Cars '+precioAuto+' | Motorbikes '+precioMoto+' per night.';
+  if (_lang === 'pt') return '🅿️ Estacionamento disponível com custo adicional: Carros '+precioAuto+' | Motos '+precioMoto+' por noite.';
+  return '🅿️ Cochera disponible con costo adicional: Autos '+precioAuto+' | Motos '+precioMoto+' por noche.';
+}
+
+function getCheckInOutTexto(fechaOut) {
+  var ciTxt, coTxt;
+  if (_lang === 'en') {
+    ciTxt = '🔑 Check-in: from 14:00 hs';
+    if (fechaOut) {
+      var dow1 = fechaOut.getDay();
+      coTxt = '🚪 Check-out on '+fechaAStr(fechaOut)+': until '+(dow1===0?'12:00':dow1===6?'11:00':'10:00')+' hs';
+    } else {
+      coTxt = '🚪 Check-out: Mon–Fri until 10:00 hs | Sat until 11:00 hs | Sun & holidays until 12:00 hs';
+    }
+  } else if (_lang === 'pt') {
+    ciTxt = '🔑 Check-in: a partir das 14:00 hs';
+    if (fechaOut) {
+      var dow2 = fechaOut.getDay();
+      coTxt = '🚪 Check-out em '+fechaAStr(fechaOut)+': até as '+(dow2===0?'12:00':dow2===6?'11:00':'10:00')+' hs';
+    } else {
+      coTxt = '🚪 Check-out: Seg–Sex até 10:00 hs | Sáb até 11:00 hs | Dom e feriados até 12:00 hs';
+    }
+  } else {
+    ciTxt = '🔑 Check-in: a partir de las 14:00 hs';
+    if (fechaOut) {
+      var dow3 = fechaOut.getDay();
+      coTxt = '🚪 Check-out del '+fechaAStr(fechaOut)+': hasta las '+(dow3===0?'12:00':dow3===6?'11:00':'10:00')+' hs';
+    } else {
+      coTxt = '🚪 Check-out: Lun. a Vie. hasta las 10:00 hs | Sáb. hasta las 11:00 hs | Dom. y feriados hasta las 12:00 hs';
+    }
+  }
+  return ciTxt+'\n'+coTxt;
+}
+
+function getWebTexto() {
+  if (_lang === 'en') return '🌐 Explore our facilities and rooms: www.hotelcopahue.com';
+  if (_lang === 'pt') return '🌐 Conheça nossas instalações e quartos: www.hotelcopahue.com';
+  return '🌐 Podés conocer nuestras instalaciones y habitaciones desde la web: www.hotelcopahue.com';
+}
+
 function copiar() {
   var txt=_mensajeActual||$("msg-out").textContent;
   function ok(){ $("ok-lbl").style.display="inline"; setTimeout(function(){ $("ok-lbl").style.display="none"; },2500); }
