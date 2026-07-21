@@ -303,6 +303,14 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       <button class="nb"   id="nb-checkin"          onclick="ir('checkin')">        <div class="dot"></div><span>🔑</span><span>Check-in / Check-out</span></button>
       <button class="nb"   id="nb-cancelacion"      onclick="ir('cancelacion')">    <div class="dot"></div><span>📋</span><span>Reserva y cancelación</span></button>
       <button class="nb"   id="nb-nodisponibilidad" onclick="ir('nodisponibilidad')"><div class="dot"></div><span>🚫</span><span>Sin disponibilidad</span></button>
+      <div class="nav-lbl" style="margin-top:10px;border-top:1px solid #cdd0c8;padding-top:8px">Uso interno</div>
+      <button class="nb"   id="nb-fc"               onclick="ir('fc')">             <div class="dot"></div><span>🧾</span><span>Envío de FC en Cta. Cte.</span></button>
+    </div>
+
+    <!-- ====== FC CTA CTE ====== -->
+    <div class="fp" id="fp-fc">
+      <div class="aviso">🧾 <strong>Uso interno</strong> — Genera el texto para solicitar el envío de comprobantes.</div>
+      <button class="btn-g" onclick="genFC()">✦ Generar respuesta</button>
     </div>
 
     <!-- ====== PRECIOS ====== -->
@@ -728,8 +736,8 @@ function getCamas(ocup, cat) {
   return tbl2 && tbl2[cat] ? ' _('+tbl2[cat]+')_' : '';
 }
 var CL = {Economica:"Económica"};
-var SEC = ["precios","disponibilidad","nodisponibilidad","servicios","ubicacion","checkin","cancelacion"];
-var TITLES = {precios:"Consulta de Precios",disponibilidad:"Consulta de Disponibilidad",nodisponibilidad:"Sin Disponibilidad",servicios:"Servicios del Hotel",ubicacion:"Ubicación y Cómo Llegar",checkin:"Check-in y Check-out",cancelacion:"Reserva y Cancelación"};
+var SEC = ["precios","disponibilidad","nodisponibilidad","servicios","ubicacion","checkin","cancelacion","fc"];
+var TITLES = {precios:"Consulta de Precios",disponibilidad:"Consulta de Disponibilidad",nodisponibilidad:"Sin Disponibilidad",servicios:"Servicios del Hotel",ubicacion:"Ubicación y Cómo Llegar",checkin:"Check-in y Check-out",cancelacion:"Reserva y Cancelación",fc:"Envío de FC en Cta. Cte."};
 var LINKS = {"Suite":"https://drive.google.com/drive/folders/1JtwOcY8eH650LMuDdnVy6WmpfpIv85UF","Suite Familiar":"","Standard":"https://drive.google.com/drive/folders/1IXlFJVHQx2YcucT4MYGrISn50iIoMh5U","Standard Mini":"https://drive.google.com/drive/folders/1Uie-BRwxZYM7Tp90JqtED_99h8i0vi0k","Economica":"https://drive.google.com/drive/folders/1QvMkXFTKoSa1JPQ7Z0xpyF5fD8gGWg3G","Departamento":"https://drive.google.com/drive/folders/1X8DdnxPJ8jYtXjDIUDegih70CI91d8x1"};
 var RUTA_PDFS = "C:\\Users\\Recepcion\\Documents\\Hotel Copahue\\PDFs Habitaciones";
 var _mensajeActual = "";
@@ -2458,6 +2466,17 @@ function getWebTexto() {
   return '🌐 Podés conocer nuestras instalaciones y habitaciones desde la web: www.hotelcopahue.com';
 }
 
+// ============================================================
+// FC EN CTA CTE
+// ============================================================
+function genFC() {
+  _lastGen = genFC;
+  var txt = 'Los comprobantes de pagos – retenciones se deberán enviar a la casilla de mail: giuliano.zolvini@hotelcopahue.com para poder ser procesados correctamente.';
+  mostrar(txt, "ok");
+  saveFormSnapshot();
+  limpiarForm();
+}
+
 function waToHtml(txt) {
   // Convert WhatsApp markdown to HTML
   var html = txt
@@ -2623,6 +2642,7 @@ document.addEventListener("keydown", function(e) {
     case "ubicacion":     genUbic();     break;
     case "checkin":       genCI();       break;
     case "nodisponibilidad":genNodisponibilidad(); break;
+    case "fc":            genFC();       break;
   }
 });
 
@@ -2705,9 +2725,6 @@ window.addEventListener("DOMContentLoaded", function() {
   addGlow('#btn-copy-mail');
   addGlow('#btn-dark');
 });
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
