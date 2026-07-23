@@ -627,53 +627,45 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
 // PRECIOS FALLBACK (se reemplazan al cargar la hoja)
 // ============================================================
 var P_FALLBACK = {
-  MAYO:{
-    SINGLE:{Suite:106000,Standard:89000,"Standard Mini":83000,Economica:72000},
-    DOBLE:{Suite:151000,Standard:131000,"Standard Mini":119000,Economica:109000},
-    TRIPLE:{"Suite Familiar":158000,Standard:147000,Economica:125000},
-    CUADRUPLE:{Departamento:171000,"Suite Familiar":166000,Standard:161000},
-    QUINTUPLE:{Departamento:176000,"Suite Familiar":172000},
-    DOBLE_TWIN:{Suite:151000,Standard:140000,"Standard Mini":119000,Economica:109000}
-  },
-  JUNIO:{
-    SINGLE:{Suite:108000,Standard:91000,"Standard Mini":84000,Economica:74000},
-    DOBLE:{Suite:154000,Standard:133000,"Standard Mini":122000,Economica:111000},
-    TRIPLE:{"Suite Familiar":161000,Standard:150000,Economica:127000},
-    CUADRUPLE:{Departamento:175000,"Suite Familiar":170000,Standard:165000},
-    QUINTUPLE:{Departamento:180000,"Suite Familiar":175000},
-    DOBLE_TWIN:{Suite:154000,Standard:142000,"Standard Mini":122000,Economica:111000}
-  },
   JULIO:{
     SINGLE:{Suite:110000,Standard:93000,"Standard Mini":86000,Economica:76000},
     DOBLE:{Suite:157000,Standard:135000,"Standard Mini":124000,Economica:113000},
+    DOBLE_TWIN:{Suite:157000,Standard:145000,"Standard Mini":124000,Economica:113000},
     TRIPLE:{"Suite Familiar":164000,Standard:153000,Economica:130000},
     CUADRUPLE:{Departamento:178000,"Suite Familiar":173000,Standard:169000},
-    QUINTUPLE:{Departamento:184000,"Suite Familiar":179000},
-    DOBLE_TWIN:{Suite:157000,Standard:145000,"Standard Mini":124000,Economica:113000}
+    QUINTUPLE:{Departamento:184000,"Suite Familiar":179000}
   },
   AGOSTO:{
-    SINGLE:{Suite:113000,Standard:95000,"Standard Mini":88000,Economica:78000},
-    DOBLE:{Suite:161000,Standard:138000,"Standard Mini":127000,Economica:116000},
-    TRIPLE:{"Suite Familiar":168000,Standard:157000,Economica:133000},
-    CUADRUPLE:{Departamento:182000,"Suite Familiar":177000,Standard:173000},
-    QUINTUPLE:{Departamento:189000,"Suite Familiar":183000},
-    DOBLE_TWIN:{Suite:161000,Standard:149000,"Standard Mini":127000,Economica:116000}
+    SINGLE:{Suite:114000,Standard:97000,"Standard Mini":89000,Economica:79000},
+    DOBLE:{Suite:163000,Standard:140000,"Standard Mini":129000,Economica:118000},
+    DOBLE_TWIN:{Suite:163000,Standard:151000,"Standard Mini":129000,Economica:118000},
+    TRIPLE:{"Suite Familiar":171000,Standard:159000,Economica:135000},
+    CUADRUPLE:{Departamento:185000,"Suite Familiar":180000,Standard:176000},
+    QUINTUPLE:{Departamento:191000,"Suite Familiar":186000}
   },
   SEPTIEMBRE:{
-    SINGLE:{Suite:116000,Standard:97000,"Standard Mini":90000,Economica:80000},
-    DOBLE:{Suite:165000,Standard:141000,"Standard Mini":130000,Economica:119000},
-    TRIPLE:{"Suite Familiar":172000,Standard:161000,Economica:136000},
-    CUADRUPLE:{Departamento:187000,"Suite Familiar":181000,Standard:177000},
-    QUINTUPLE:{Departamento:194000,"Suite Familiar":188000},
-    DOBLE_TWIN:{Suite:165000,Standard:153000,"Standard Mini":130000,Economica:119000}
+    SINGLE:{Suite:119000,Standard:101000,"Standard Mini":93000,Economica:82000},
+    DOBLE:{Suite:170000,Standard:146000,"Standard Mini":134000,Economica:122000},
+    DOBLE_TWIN:{Suite:170000,Standard:157000,"Standard Mini":134000,Economica:122000},
+    TRIPLE:{"Suite Familiar":177000,Standard:166000,Economica:141000},
+    CUADRUPLE:{Departamento:193000,"Suite Familiar":187000,Standard:183000},
+    QUINTUPLE:{Departamento:199000,"Suite Familiar":194000}
   },
   OCTUBRE:{
-    SINGLE:{Suite:119000,Standard:100000,"Standard Mini":92000,Economica:82000},
-    DOBLE:{Suite:169000,Standard:145000,"Standard Mini":133000,Economica:122000},
-    TRIPLE:{"Suite Familiar":175000,Standard:165000,Economica:139000},
-    CUADRUPLE:{Departamento:192000,"Suite Familiar":186000,Standard:181000},
-    QUINTUPLE:{Departamento:199000,"Suite Familiar":193000},
-    DOBLE_TWIN:{Suite:169000,Standard:157000,"Standard Mini":133000,Economica:122000}
+    SINGLE:{Suite:123000,Standard:104000,"Standard Mini":96000,Economica:85000},
+    DOBLE:{Suite:176000,Standard:151000,"Standard Mini":139000,Economica:127000},
+    DOBLE_TWIN:{Suite:176000,Standard:162000,"Standard Mini":139000,Economica:127000},
+    TRIPLE:{"Suite Familiar":184000,Standard:171000,Economica:146000},
+    CUADRUPLE:{Departamento:199000,"Suite Familiar":194000,Standard:189000},
+    QUINTUPLE:{Departamento:206000,"Suite Familiar":200000}
+  },
+  NOVIEMBRE:{
+    SINGLE:{Suite:127000,Standard:107000,"Standard Mini":99000,Economica:88000},
+    DOBLE:{Suite:181000,Standard:156000,"Standard Mini":143000,Economica:130000},
+    DOBLE_TWIN:{Suite:181000,Standard:167000,"Standard Mini":143000,Economica:130000},
+    TRIPLE:{"Suite Familiar":189000,Standard:177000,Economica:150000},
+    CUADRUPLE:{Departamento:205000,"Suite Familiar":200000,Standard:195000},
+    QUINTUPLE:{Departamento:212000,"Suite Familiar":206000}
   }
 };
 var P = JSON.parse(JSON.stringify(P_FALLBACK));
@@ -684,7 +676,7 @@ var P = JSON.parse(JSON.stringify(P_FALLBACK));
 var SHEET_ID = '1DYjZypoU8vayTlbEKuIMaUZBnwf1mmG3SWPfo45MT64';
 var MESES_ES = {ENERO:"Enero",FEBRERO:"Febrero",MARZO:"Marzo",ABRIL:"Abril",MAYO:"Mayo",JUNIO:"Junio",JULIO:"Julio",AGOSTO:"Agosto",SEPTIEMBRE:"Septiembre",OCTUBRE:"Octubre",NOVIEMBRE:"Noviembre",DICIEMBRE:"Diciembre"};
 var MESES_ORD = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
-var ME = {MAYO:"Mayo",JUNIO:"Junio",JULIO:"Julio",AGOSTO:"Agosto",SEPTIEMBRE:"Septiembre",OCTUBRE:"Octubre",NOVIEMBRE:"Noviembre"};
+var ME = {JULIO:"Julio",AGOSTO:"Agosto",SEPTIEMBRE:"Septiembre",OCTUBRE:"Octubre",NOVIEMBRE:"Noviembre"};
 function meLabel(key,anio){ return (MESES_ES[key]||ME[key]||key)+' '+(anio||$('p-anio')&&$('p-anio').value||''); }
 var OE = {SINGLE:"1 persona",DOBLE:"2 personas (Doble Matrimonial)",DOBLE_TWIN:"2 personas (Doble Twin)",TRIPLE:"3 personas",CUADRUPLE:"4 personas",QUINTUPLE:"5 personas"};
 var OE_EN = {SINGLE:"1 guest",DOBLE:"2 guests (Double)",DOBLE_TWIN:"2 guests (Twin)",TRIPLE:"3 guests",CUADRUPLE:"4 guests",QUINTUPLE:"5 guests"};
@@ -1129,7 +1121,7 @@ function parsearPreciosDeMes(filas, mesRow) {
   return resultado;
 }
 
-var MESES_VALIDOS = ['MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE']; // meses con tarifas vigentes
+var MESES_VALIDOS = ['JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE']; // meses con tarifas vigentes
 
 function cargarPreciosDesdeHoja() {
   // Precios cargados directamente desde el cuadro tarifario — sin dependencia externa
@@ -1295,13 +1287,13 @@ function poblarMesesPrecios() {
   var mesActual = hoy.getMonth(); // 0-based
   var anioSel = parseInt($('p-anio').value) || anioActual;
   MESES_ORD.forEach(function(m, idx) {
-    // Si es el año actual, ocultar meses anteriores al mes en curso
+    // Ocultar meses pasados del año actual
     if (anioSel === anioActual && idx < mesActual) return;
+    // Ocultar meses sin tarifas cargadas
+    if (!tienePreciosMes(m)) return;
     var opt = document.createElement('option');
     opt.value = m;
-    var tienePrecios = tienePreciosMes(m);
-    opt.textContent = MESES_ES[m] + (tienePrecios ? '' : ' ⚠');
-    if (!tienePrecios) opt.style.color = '#c0392b';
+    opt.textContent = MESES_ES[m];
     sel.appendChild(opt);
   });
   // Restaurar selección si sigue siendo válida
@@ -2422,9 +2414,19 @@ function genNodisponibilidad() {
 }
 // ============================================================
 function getCocheraTexto(mesKey) {
-  var mesesAlta = ['OCTUBRE','NOVIEMBRE','DICIEMBRE','ENERO'];
-  var precioAuto = mesesAlta.indexOf(mesKey) >= 0 ? '$14.000' : '$13.000';
-  var precioMoto = mesesAlta.indexOf(mesKey) >= 0 ? '$11.000' : '$10.000';
+  var tarifas = {
+    JULIO:      {auto:'$13.000', moto:'$10.000'},
+    AGOSTO:     {auto:'$13.000', moto:'$10.000'},
+    SEPTIEMBRE: {auto:'$14.000', moto:'$11.000'},
+    OCTUBRE:    {auto:'$14.000', moto:'$11.000'},
+    NOVIEMBRE:  {auto:'$15.000', moto:'$12.000'},
+    DICIEMBRE:  {auto:'$15.000', moto:'$12.000'},
+    ENERO:      {auto:'$15.000', moto:'$12.000'},
+    FEBRERO:    {auto:'$16.000', moto:'$13.000'},
+    MARZO:      {auto:'$16.000', moto:'$13.000'}
+  };
+  var t = tarifas[mesKey] || {auto:'$13.000', moto:'$10.000'};
+  var precioAuto = t.auto, precioMoto = t.moto;
   if (_lang === 'en') return '🅿️ Parking available at an additional cost: Cars '+precioAuto+' | Motorbikes '+precioMoto+' per night.';
   if (_lang === 'pt') return '🅿️ Estacionamento disponível com custo adicional: Carros '+precioAuto+' | Motos '+precioMoto+' por noite.';
   return '🅿️ Cochera disponible con costo adicional: Autos '+precioAuto+' | Motos '+precioMoto+' por noche.';
@@ -2478,16 +2480,16 @@ function genFC() {
 }
 
 function waToHtml(txt) {
-  // Convert WhatsApp markdown to HTML
-  var html = txt
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    // Bold: *text*
+  // Strip emojis for mail version
+  var noEmoji = txt
+    .replace(/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/g, "")
+    .replace(/[ \t]+/g, " ")
+    .replace(/^[ \t]+/gm, "");
+  var html = noEmoji
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
     .replace(/\*([^*\n]+)\*/g,'<b>$1</b>')
-    // Italic: _text_
     .replace(/_([^_\n]+)_/g,'<i>$1</i>')
-    // Strikethrough: ~text~
     .replace(/~([^~\n]+)~/g,'<s>$1</s>')
-    // Line breaks
     .replace(/\n/g,'<br>');
   return '<div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:500;line-height:1.9;color:#1a2a1e;background:white">'+html+'</div>';
 }
@@ -2725,6 +2727,9 @@ window.addEventListener("DOMContentLoaded", function() {
   addGlow('#btn-copy-mail');
   addGlow('#btn-dark');
 });
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
