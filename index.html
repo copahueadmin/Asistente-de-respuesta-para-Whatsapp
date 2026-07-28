@@ -317,13 +317,12 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       <button class="nb"   id="nb-nodisponibilidad" onclick="ir('nodisponibilidad')"><div class="dot"></div><span>🚫</span><span>Sin disponibilidad</span></button>
       <div class="nav-lbl" style="margin-top:10px;border-top:1px solid #cdd0c8;padding-top:8px">Uso interno</div>
       <button class="nb"   id="nb-catalogo"         onclick="mostrarCatalogo()"><div class="dot"></div><span>📚</span><span>Catálogo Whatsapp</span></button>
-      <button class="nb"   id="nb-fc"               onclick="ir('fc')">             <div class="dot"></div><span>🧾</span><span>Envío de FC en Cta. Cte.</span></button>
+      <button class="nb"   id="nb-fc"               onclick="genFC()">             <div class="dot"></div><span>🧾</span><span>Envío de FC en Cta. Cte.</span></button>
     </div>
 
     <!-- ====== FC CTA CTE ====== -->
     <div class="fp" id="fp-fc">
       <div class="aviso">🧾 <strong>Uso interno</strong> — Genera el texto para solicitar el envío de comprobantes.</div>
-      <button class="btn-g" onclick="genFC()">✦ Generar respuesta</button>
     </div>
 
     <!-- ====== PRECIOS ====== -->
@@ -2643,7 +2642,7 @@ function getWebTexto() {
 
 
 function mostrarCatalogo() {
-  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; });
+  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; document.querySelectorAll('.fp').forEach(function(f){f.style.display='none';}); });
   $("main-title").textContent = "Catálogo de Habitaciones";
   var cats = [
     {nombre:"Suite",             link:"https://wa.me/p/36708525352124227/476942745659"},
@@ -2663,8 +2662,13 @@ function mostrarCatalogo() {
 // FC EN CTA CTE
 // ============================================================
 function genFC() {
+  resetLangToES();
   _lastGen = genFC;
-  var txt = 'Los comprobantes de pagos – retenciones se deberán enviar a la casilla de mail: giuliano.zolvini@hotelcopahue.com para poder ser procesados correctamente.';
+  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; });
+  document.querySelectorAll('.fp').forEach(function(f){f.style.display='none';});
+  var nb=$("nb-fc"); if(nb) nb.className="nb on";
+  $("main-title").textContent = "Envío de FC en Cta. Cte.";
+  var txt = 'Los comprobantes de pagos – retenciones se deberán enviar a la casilla de mail: giuliano.zolvini@hotelcopahue.com para poder ser procesados correctamente.\n\n*IMPORTANTE:* De acuerdo a nuestras políticas, no se requiere un pago adelantado para reservar, y *es posible cancelar sin cargo hasta 48 horas antes del check-in*. En caso de contar con un pago realizado previamente, el monto abonado no se reembolsa ni se guarda a favor.';
   mostrar(txt, "ok");
   saveFormSnapshot();
   limpiarForm();
