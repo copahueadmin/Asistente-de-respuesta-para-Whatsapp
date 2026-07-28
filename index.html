@@ -1209,6 +1209,7 @@ function ir(sec) {
   SEC.forEach(function(s) {
     $("nb-"+s).className = "nb"+(s===sec?" on":"");
     var fp = $("fp-"+s);
+    fp.style.display = '';  // clear any inline override
     fp.className = "fp"+(s===sec?" activo":"");
   });
   $("main-title").textContent = TITLES[sec];
@@ -2642,7 +2643,7 @@ function getWebTexto() {
 
 
 function mostrarCatalogo() {
-  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; document.querySelectorAll('.fp').forEach(function(f){f.style.display='none';}); });
+  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; var fp=$("fp-"+s); if(fp){fp.style.display='';fp.className="fp";} });
   $("main-title").textContent = "Catálogo de Habitaciones";
   var cats = [
     {nombre:"Suite",             link:"https://wa.me/p/36708525352124227/476942745659"},
@@ -2664,8 +2665,7 @@ function mostrarCatalogo() {
 function genFC() {
   resetLangToES();
   _lastGen = genFC;
-  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; });
-  document.querySelectorAll('.fp').forEach(function(f){f.style.display='none';});
+  SEC.forEach(function(s){ var nb=$("nb-"+s); if(nb) nb.className="nb"; var fp=$("fp-"+s); if(fp){fp.style.display='';fp.className="fp";} });
   var nb=$("nb-fc"); if(nb) nb.className="nb on";
   $("main-title").textContent = "Envío de FC en Cta. Cte.";
   var txt = 'Los comprobantes de pagos – retenciones se deberán enviar a la casilla de mail: giuliano.zolvini@hotelcopahue.com para poder ser procesados correctamente.\n\n*IMPORTANTE:* De acuerdo a nuestras políticas, no se requiere un pago adelantado para reservar, y *es posible cancelar sin cargo hasta 48 horas antes del check-in*. En caso de contar con un pago realizado previamente, el monto abonado no se reembolsa ni se guarda a favor.';
