@@ -35,8 +35,14 @@ button,input,select,textarea,span,.nb,.lbl,.inp,.btn-g,.btn-mini,.btn-clr,.chip-
 /* ── Sidebar collapse ── */
 #sb-toggle{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.75);font-size:18px;padding:2px 8px;line-height:1;transition:color .15s;flex-shrink:0}
 #sb-toggle:hover{color:#fff}
-#layout.sb-hidden{grid-template-columns:0px 4px 1fr}
-#layout.sb-hidden #sidebar{display:none}
+#layout.sb-hidden{grid-template-columns:48px 4px 1fr}
+#layout.sb-hidden #sidebar{overflow:hidden}
+#layout.sb-hidden .nb span:last-child,
+#layout.sb-hidden .nav-lbl,
+#layout.sb-hidden .fp{display:none !important}
+#layout.sb-hidden .nb{justify-content:center;padding:7px 0}
+#layout.sb-hidden .dot{display:none}
+#layout.sb-hidden #nav{padding:8px 4px 0}
 
 /* DRAG HANDLE */
 #drag-handle{background:#bec2b8;cursor:col-resize;transition:background .15s;display:flex;align-items:center;justify-content:center;user-select:none;z-index:10}
@@ -2882,29 +2888,25 @@ function toggleDark() {
 // ============================================================
 // INIT
 // ============================================================
+function toggleSidebar() {
+  var layout = document.getElementById('layout');
+  var collapsed = layout.classList.toggle('sb-hidden');
+  if (collapsed) {
+    layout.dataset.savedW = layout.style.gridTemplateColumns.split(' ')[0] || '320px';
+    layout.style.gridTemplateColumns = '';
+  } else {
+    var w = layout.dataset.savedW || '320px';
+    layout.style.gridTemplateColumns = w + ' 4px 1fr';
+  }
+}
+
 window.addEventListener("DOMContentLoaded", function() {
   $('preview-track').className = 'wa';
   poblarAniosPrecios();
   initServiciosChks();
   cargarPreciosDesdeHoja();
   $('ref-box').style.display = 'block'; // precios es la sección por defecto
-
-
-
-
-function toggleSidebar() {
-  var layout = $('layout');
-  var hidden = layout.classList.toggle('sb-hidden');
-  if (!hidden) {
-    // Restore to current sidebar width
-    var w = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-w').trim() || '320px';
-    layout.style.gridTemplateColumns = w + ' 4px 1fr';
-  } else {
-    layout.style.gridTemplateColumns = '';
-  }
-}
-
-  // Sidebar drag resize
+// ───────────────────────────────────────────────
   (function() {
     var handle = $('drag-handle');
     var layout = $('layout');
@@ -2922,6 +2924,7 @@ function toggleSidebar() {
       var rect = layout.getBoundingClientRect();
       var w = Math.min(maxW, Math.max(minW, e.clientX - rect.left));
       layout.style.gridTemplateColumns = w+'px 4px 1fr';
+      layout.dataset.savedW = w+'px';
       document.documentElement.style.setProperty('--sidebar-w', w+'px');
     });
     document.addEventListener('mouseup', function() {
