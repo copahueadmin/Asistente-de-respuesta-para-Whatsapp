@@ -379,9 +379,14 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
           </div>
         </div>
       </div>
+      <div id="p-especial-wrap" style="display:none">
+        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040">
+          <input type="checkbox" id="p-especial" onchange="actuCard()">
+          <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales — aplicar +10%</span>
+        </label>
+      </div>
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-          <span class="lbl" style="margin:0">Categorías <span class="lbl-sub">(una o más)</span></span>
           <div style="display:flex;gap:5px">
             <button class="btn-mini" onclick="selTodasCats(true)">Todas</button>
             <button class="btn-mini" onclick="selTodasCats(false)">Ninguna</button>
@@ -456,6 +461,12 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
         </div>
       </div>
       <div id="d-err" style="font-size:11.5px;color:#c0392b;display:none;margin-top:-5px"></div>
+      <div id="d-especial-wrap" style="display:none">
+        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040">
+          <input type="checkbox" id="d-especial">
+          <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales — aplicar +10%</span>
+        </label>
+      </div>
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
           <span class="lbl" style="margin:0">Categorías disponibles <span class="lbl-sub">(marcar)</span></span>
@@ -1390,6 +1401,12 @@ function onMes() {
   var m = val('p-mes');
   var anio = $('p-anio') ? $('p-anio').value : '';
   $('mes-pill').textContent = m ? (MESES_ES[m]||m).toUpperCase()+' '+anio : '—';
+  // Show tarifas especiales only for August
+  var espWrap = $('p-especial-wrap');
+  if (espWrap) {
+    espWrap.style.display = (m === 'AGOSTO') ? 'block' : 'none';
+    if (m !== 'AGOSTO' && $('p-especial')) $('p-especial').checked = false;
+  }
   poblarCatsPrecios();
   actuCard();
   refCard();
@@ -1575,6 +1592,10 @@ function getPrecioEfectivo(m, o, c) {
       pn = P[m].DOBLE[c] || P[m].DOBLE["Suite"];
     }
   }
+  // Apply tarifas especiales +10% (August only)
+  if (m === 'AGOSTO' && $('p-especial') && $('p-especial').checked) {
+    pn = redondearEspecial(pn * 1.10);
+  }
   return pn;
 }
 
@@ -1628,6 +1649,8 @@ function genPreciosMesCompleto(m) {
         }
       }
       if (!pn) return;
+      // Apply tarifas especiales +10%
+      if (m === 'AGOSTO' && $('p-especial') && $('p-especial').checked) pn = redondearEspecial(pn * 1.10);
       var notaFinde = (g.o==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? " _"+t("findeBaseDoble")+"_" : "";
       txt += "   🏨 *"+clT(c)+"*"+getCamas(g.o,c)+": *"+pesos(pn)+"*"+notaFinde+"\n";
@@ -1924,7 +1947,17 @@ function validarFechasDisp() {
     errEl.textContent="La fecha de egreso debe ser posterior al ingreso.";
     errEl.style.display="block"; return false;
   }
-  errEl.style.display="none"; return true;
+  errEl.style.display="none";
+  // Show tarifas especiales checkbox if dates overlap Aug 14-17 2026
+  var espWrap = $('d-especial-wrap');
+  if (espWrap && dIn) {
+    var aug14 = new Date(2026,7,14), aug17 = new Date(2026,7,17);
+    aug14.setHours(0,0,0,0); aug17.setHours(0,0,0,0);
+    var overlap = dIn <= aug17 && (dOut ? dOut > aug14 : dIn >= aug14);
+    espWrap.style.display = overlap ? 'block' : 'none';
+    if (!overlap && $('d-especial')) $('d-especial').checked = false;
+  }
+  return true;
 }
 
 // --- CALENDARIO POPUP ---
@@ -2322,6 +2355,10 @@ function genDisp() {
           ? (P[mesKey].DOBLE[c]||P[mesKey].DOBLE["Suite"])
           : P[mesKey].DOBLE[c];
       }
+      // Apply tarifas especiales +10% if Aug 14-17 dates
+      if (mesKey === 'AGOSTO' && $('d-especial') && $('d-especial').checked) {
+        pn = redondearEspecial(pn * 1.10);
+      }
       return pn;
     };
 
@@ -2596,6 +2633,13 @@ function getWACatalogTexto() {
   return '';
 }
 
+
+function redondearEspecial(pn) {
+  // Round to nearest 1000: if remainder >= 400 → round up, else → round down
+  var resto = pn % 1000;
+  return resto >= 400 ? pn - resto + 1000 : pn - resto;
+}
+
 function getCocheraTexto(mesKey) {
   var tarifas = {
     JULIO:      {auto:'$13.000', moto:'$10.000'},
@@ -2820,6 +2864,8 @@ function limpiarForm() {
   $("p-cats-wrap").innerHTML='<div style="font-size:11.5px;color:#9aaa9e;font-style:italic;padding:4px 2px">Elegí el mes y personas primero</div>';
   $("d-cats-wrap").innerHTML='<div style="font-size:11.5px;color:#9aaa9e;font-style:italic;padding:4px 2px">Elegí las personas primero</div>';
   $("p-finde-wrap").style.display="none";
+  if($('p-especial')){ $('p-especial').checked=false; $('p-especial-wrap').style.display='none'; }
+  if($('d-especial')){ $('d-especial').checked=false; $('d-especial-wrap').style.display='none'; }
   // Reset sin disponibilidad range states
   ND_RANGO.start=null; ND_RANGO.end=null;
   ALT_RANGO.start=null; ALT_RANGO.end=null;
