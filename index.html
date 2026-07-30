@@ -53,13 +53,13 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 
 /* SIDEBAR */
 #sidebar{background:#e8eae4;border-right:none;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-color:#bec2b8 #e8eae4}
-#nav{padding:8px 10px 0;display:flex;flex-direction:column;gap:1px;flex-shrink:0}
+#nav{padding:6px 10px 0;display:flex;flex-direction:column;gap:0px;flex-shrink:0}
 .nav-lbl{font-size:clamp(9px,0.85vw,11px);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1e3028;padding:0 8px;margin:4px 0 2px}
-.nb{display:flex;align-items:center;gap:8px;padding:5px 10px;border:none;background:transparent;border-radius:7px;cursor:pointer;width:100%;font-family:'Outfit',sans-serif;font-size:clamp(12px,1.05vw,15px);font-weight:600;color:#2a3c2e;transition:background .12s;text-align:left}
+.nb{display:flex;align-items:center;gap:7px;padding:3px 10px;border:none;background:transparent;border-radius:7px;cursor:pointer;width:100%;font-family:'Outfit',sans-serif;font-size:clamp(13px,1.1vw,16px);font-weight:600;color:#2a3c2e;transition:background .12s;text-align:left}
 .nb:hover{background:linear-gradient(90deg,#a8ccb4 0%,#d4eadc 100%);color:#122818;font-weight:700}
 .nb.on{background:linear-gradient(90deg,#8abca0 0%,#c4e0cc 100%);color:#0f2010;font-weight:800}
 .nb.on .dot{background:#0f2010}
-.dot{width:6px;height:6px;border-radius:50%;background:#a8b8ac;flex-shrink:0}
+.dot{width:5px;height:5px;border-radius:50%;background:#a8b8ac;flex-shrink:0}
 
 /* FORM PANELS */
 .fp{padding:14px;display:none;flex-direction:column;gap:11px;border-top:1px solid #dfe2da;margin-top:6px}
@@ -93,10 +93,12 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 .btn-g::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--bx,50%) var(--by,50%),rgba(180,210,255,.35) 0%,transparent 62%);opacity:var(--glow-opacity,0);transition:opacity .18s;pointer-events:none;border-radius:inherit}
 .btn-g:hover{background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);box-shadow:0 4px 20px rgba(30,64,48,.5)}
 
+
 .p-mt-btn{background:#f0f7f3;border:1.5px solid #b2d4bf;border-radius:6px;padding:5px 13px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#2d6148;transition:all .15s}
 .p-mt-btn:hover{border-color:#1e4030;color:#1e4030;background:#d8ead2}
 .p-mt-btn.sel{background:#1e4030;border-color:#1e4030;color:#fff}
-html.dark .p-mt-btn{background:#162018;border-color:#2e5040;color:#8dcca0}
+html.dark 
+.p-mt-btn{background:#162018;border-color:#2e5040;color:#8dcca0}
 html.dark .p-mt-btn:hover{border-color:#4a7a5e;color:#eae8e2}
 html.dark .p-mt-btn.sel{background:#1e3028;border-color:#4a7a5e;color:#c8e8c0}
 .p-ocup-btn{background:#e4e7e0;border:1.5px solid #bec2b8;border-radius:6px;padding:5px 11px;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;color:#4a6a54;transition:all .15s}
@@ -115,7 +117,7 @@ html.dark .doble-btn.active{background:#1e2e1a;border-color:#4a7a5e;color:#c8e8c
 .btn-mini:hover{background:#e4f0ea}
 
 /* CHECKBOXES */
-.chk-row{display:flex;align-items:flex-start;gap:8px;font-size:clamp(12px,0.95vw,14px);font-weight:500;color:#0f1e14;cursor:pointer;padding:6px 10px;border:1.5px solid #bec2b8;border-radius:7px;background:#d6dbd2;transition:border-color .12s,background .12s;user-select:none;line-height:1.3}
+.chk-row{display:flex;align-items:flex-start;gap:5px;font-size:clamp(11px,0.85vw,13px);font-weight:600;color:#0f1e14;cursor:pointer;padding:4px 8px;border:1.5px solid #bec2b8;border-radius:6px;background:#d6dbd2;transition:border-color .12s,background .12s;user-select:none;line-height:1.3}
 .chk-row:hover{border-color:#a0c4b0;background:#cce0d4}
 .chk-row.ck{border-color:#1e4030;background:#c4dcd0}
 .chk-row input[type=checkbox]{width:14px;height:14px;accent-color:#1e4030;cursor:pointer;flex-shrink:0;margin-top:2px}
@@ -1196,7 +1198,7 @@ function saludoHora() {
   var h = new Date().getHours();
   if (_lang === 'en') return h>=6&&h<13 ? 'Good morning' : h<20 ? 'Good afternoon' : 'Good evening';
   if (_lang === 'pt') return h>=6&&h<13 ? 'Bom dia' : h<20 ? 'Boa tarde' : 'Boa noite';
-  return h>=6&&h<13 ? 'Buen día' : h<20 ? 'Buenas tardes' : 'Buenas noches';
+  return h>=6&&h<13 ? '¡Buen día' : h<20 ? '¡Buenas tardes' : '¡Buenas noches';
 }
 function hola(id){ var n=val(id).trim(); return n ? saludoHora()+', '+n+'! 👋' : saludoHora()+'! 👋'; }
 function getDescuentos(){ return _previewMode==='mail' ? '' : t('descuentos'); }
@@ -1627,8 +1629,8 @@ function genPreciosMesCompleto(m) {
   txt += "Te compartimos las tarifas completas para *" + (MESES_ES[m]||m) + " " + anio + "*:\n";
 
   var grupos = [
-    { label:"1 persona (Single)",        o:"SINGLE",    cats:["Suite","Standard","Standard Mini","Economica","Suite Familiar"] },
-    { label:"2 personas (Doble Mat.)",   o:"DOBLE",     cats:["Suite","Standard","Standard Mini","Economica","Suite Familiar"] },
+    { label:"1 persona (Single)",        o:"SINGLE",    cats:["Suite","Suite Familiar","Standard","Standard Mini","Economica"] },
+    { label:"2 personas (Doble Mat.)",   o:"DOBLE",     cats:["Suite","Suite Familiar","Standard","Standard Mini","Economica"] },
     { label:"2 personas (Doble Twin)",   o:"DOBLE_TWIN",cats:["Suite","Standard","Standard Mini","Economica"] },
     { label:"3 personas (Triple)",       o:"TRIPLE",    cats:["Suite Familiar","Standard","Economica"] },
     { label:"4 personas (Cuádruple)",    o:"CUADRUPLE", cats:["Suite Familiar","Departamento","Standard"] },
@@ -1681,10 +1683,12 @@ function genPrecios() {
   var ocupList = getOcupSeleccionadas();
   var n=parseInt(val("p-noches"))||1;
   var cats = getPCatsSeleccionadas();
+  // Order: Suite → Suite Familiar → others
+  var ORDER = ["Suite","Suite Familiar","Departamento","Standard","Standard Mini","Economica"];
   cats = cats.slice().sort(function(a,b){
-    if(a==="Suite Familiar") return -1;
-    if(b==="Suite Familiar") return 1;
-    return 0;
+    var ia = ORDER.indexOf(a); var ib = ORDER.indexOf(b);
+    if(ia===-1) ia=99; if(ib===-1) ib=99;
+    return ia - ib;
   });
 
   if (!m){ mostrar("⚠️ Seleccioná el mes.","err"); return; }
@@ -2254,7 +2258,7 @@ function poblarCatsDisp() {
     wrap.innerHTML='<div style="font-size:11.5px;color:#9aaa9e;font-style:italic;padding:4px 2px">Elegí las personas primero</div>';
     return;
   }
-  if (ocup==="SINGLE"||ocup==="DOBLE") cats=["Suite","Standard","Standard Mini","Economica","Suite Familiar"];
+  if (ocup==="SINGLE"||ocup==="DOBLE") cats=["Suite","Suite Familiar","Standard","Standard Mini","Economica"];
   else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard","Standard Mini","Economica"];
   else if (ocup==="TRIPLE") cats=["Suite Familiar","Standard","Economica"];
   else if (ocup==="CUADRUPLE") cats=["Suite Familiar","Departamento","Standard"];
@@ -2324,10 +2328,12 @@ function genDisp() {
   var cats=[];
   for (var i=0;i<chks.length;i++) cats.push(chks[i].value);
   // Suite Familiar siempre primera si está seleccionada
+  // Order: Suite → Suite Familiar → others
+  var ORDER = ["Suite","Suite Familiar","Departamento","Standard","Standard Mini","Economica"];
   cats = cats.slice().sort(function(a,b){
-    if(a==="Suite Familiar") return -1;
-    if(b==="Suite Familiar") return 1;
-    return 0;
+    var ia = ORDER.indexOf(a); var ib = ORDER.indexOf(b);
+    if(ia===-1) ia=99; if(ib===-1) ib=99;
+    return ia - ib;
   });
 
   var encabezado = tFn('dispIntro')(nochesT,fechaInStr,fechaOutStr,nochesN,OE[ocup]);
@@ -2410,6 +2416,8 @@ var SERVICIOS_DEF = [
    txt:"🍽️ *Restaurante Don Benito* — Se encuentra en planta baja junto al lobby, allí servimos el desayuno pero también se puede almorzar, merendar y cenar.\n   Horarios: Lun. a Sáb. de 7 a 00hs | Dom. de 7 a 11hs.\n   _No disponemos de cargos a la habitación._"},
   {id:"sv-parking", label:"🅿️ Estacionamiento privado",
    txt:"🅿️ *Estacionamiento privado techado* en las inmediaciones del hotel (hasta 100 mts). Con costo adicional."},
+  {id:"sv-menores", label:"👶 Menores y cunas",
+   txt:"👶 *Menores y cunas:*\n   • *Menores:* hasta los 2 años inclusive no abonan diferencia. A partir de los 3 años en adelante se contemplan como otra persona en la tarifa.\n   • *Cuna:* se puede solicitar sin cargo, son con reserva previa y están sujetas a disponibilidad."},
   {id:"sv-wifi", label:"📶 WiFi de alta velocidad",
    txt:"📶 *WiFi de alta velocidad* gratuito en todas las instalaciones."},
   {id:"sv-clima", label:"❄️🔥 Climatización centralizada",
