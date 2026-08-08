@@ -1406,8 +1406,8 @@ function onMes() {
   // Show tarifas especiales only for August
   var espWrap = $('p-especial-wrap');
   if (espWrap) {
-    espWrap.style.display = (m === 'AGOSTO') ? 'block' : 'none';
-    if (m !== 'AGOSTO' && $('p-especial')) $('p-especial').checked = false;
+    espWrap.style.display = (m === 'AGOSTO' || m === 'SEPTIEMBRE') ? 'block' : 'none';
+    if (m !== 'AGOSTO' && m !== 'SEPTIEMBRE' && $('p-especial')) $('p-especial').checked = false;
   }
   poblarCatsPrecios();
   actuCard();
@@ -1595,7 +1595,7 @@ function getPrecioEfectivo(m, o, c) {
     }
   }
   // Apply tarifas especiales +10% (August only)
-  if (m === 'AGOSTO' && $('p-especial') && $('p-especial').checked) {
+  if ((m === 'AGOSTO' || m === 'SEPTIEMBRE') && $('p-especial') && $('p-especial').checked) {
     pn = redondearEspecial(pn * 1.10);
   }
   return pn;
@@ -1652,7 +1652,7 @@ function genPreciosMesCompleto(m) {
       }
       if (!pn) return;
       // Apply tarifas especiales +10%
-      if (m === 'AGOSTO' && $('p-especial') && $('p-especial').checked) pn = redondearEspecial(pn * 1.10);
+      if ((m === 'AGOSTO' || m === 'SEPTIEMBRE') && $('p-especial') && $('p-especial').checked) pn = redondearEspecial(pn * 1.10);
       var notaFinde = (g.o==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? " _"+t("findeBaseDoble")+"_" : "";
       txt += "   🏨 *"+clT(c)+"*"+getCamas(g.o,c)+": *"+pesos(pn)+"*"+notaFinde+"\n";
@@ -1956,8 +1956,12 @@ function validarFechasDisp() {
   var espWrap = $('d-especial-wrap');
   if (espWrap && dIn) {
     var aug14 = new Date(2026,7,14), aug17 = new Date(2026,7,17);
+    var sep4  = new Date(2026,8,4),  sep5  = new Date(2026,8,5);
     aug14.setHours(0,0,0,0); aug17.setHours(0,0,0,0);
-    var overlap = dIn <= aug17 && (dOut ? dOut > aug14 : dIn >= aug14);
+    sep4.setHours(0,0,0,0);  sep5.setHours(0,0,0,0);
+    var overlapAug = dIn <= aug17 && (dOut ? dOut > aug14 : dIn >= aug14);
+    var overlapSep = dIn <= sep5  && (dOut ? dOut > sep4  : dIn >= sep4);
+    var overlap = overlapAug || overlapSep;
     espWrap.style.display = overlap ? 'block' : 'none';
     if (!overlap && $('d-especial')) $('d-especial').checked = false;
   }
@@ -2362,7 +2366,7 @@ function genDisp() {
           : P[mesKey].DOBLE[c];
       }
       // Apply tarifas especiales +10% if Aug 14-17 dates
-      if (mesKey === 'AGOSTO' && $('d-especial') && $('d-especial').checked) {
+      if ((mesKey === 'AGOSTO' || mesKey === 'SEPTIEMBRE') && $('d-especial') && $('d-especial').checked) {
         pn = redondearEspecial(pn * 1.10);
       }
       return pn;
