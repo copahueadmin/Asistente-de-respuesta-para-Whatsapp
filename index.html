@@ -94,7 +94,11 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 .btn-g:hover{background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);box-shadow:0 4px 20px rgba(30,64,48,.5)}
 
 
-.p-mt-btn{background:#f0f7f3;border:1.5px solid #b2d4bf;border-radius:6px;padding:5px 13px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#2d6148;transition:all .15s}
+.pct-btn{background:#fff8e6;border:1.5px solid #f0c040;border-radius:5px;padding:2px 7px;font-size:10.5px;font-weight:700;cursor:pointer;color:#7a5800;transition:all .12s}
+.pct-btn:hover{background:#ffe8a0}
+.pct-btn.sel{background:#f0c040;border-color:#d4a800;color:#3a2800}
+html.dark .pct-btn{background:#2a2210;border-color:#a08020;color:#e0c060}
+html.dark .pct-btn.sel{background:#a08020;color:#fff}border:1.5px solid #b2d4bf;border-radius:6px;padding:5px 13px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#2d6148;transition:all .15s}
 .p-mt-btn:hover{border-color:#1e4030;color:#1e4030;background:#d8ead2}
 .p-mt-btn.sel{background:#1e4030;border-color:#1e4030;color:#fff}
 html.dark 
@@ -337,6 +341,7 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       <div class="nav-lbl" style="margin-top:10px;border-top:1px solid #cdd0c8;padding-top:8px">Uso interno</div>
       <button class="nb"   id="nb-catalogo"         onclick="mostrarCatalogo()"><div class="dot"></div><span>📚</span><span>Catálogo Whatsapp</span></button>
       <button class="nb"   id="nb-capacitaciones"   onclick="mostrarCapacitaciones()"><div class="dot"></div><span>🎓</span><span>Capacitaciones</span></button>
+      <button class="nb"                            onclick="window.open('https://roomings-hotelcopahue.netlify.app','_blank')"><div class="dot"></div><span>🏨</span><span>Armado de Roomings</span></button>
       <button class="nb"   id="nb-fc"               onclick="genFC()">             <div class="dot"></div><span>🧾</span><span>Envío de FC en Cta. Cte.</span></button>
     </div>
 
@@ -381,10 +386,17 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
           </div>
         </div>
       </div>
-      <div id="p-especial-wrap" style="display:none">
-        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040">
-          <input type="checkbox" id="p-especial" onchange="actuCard()">
-          <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales — aplicar +10%</span>
+      <div id="p-especial-wrap">
+        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040;flex-wrap:wrap;gap:6px">
+          <div style="display:flex;align-items:center;gap:6px;flex:1">
+            <input type="checkbox" id="p-especial" onchange="actuCard()">
+            <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales</span>
+          </div>
+          <div id="p-pct-btns" style="display:flex;gap:4px">
+            <button class="pct-btn sel" data-pct="10" onclick="setPct('p',this)">+10%</button>
+            <button class="pct-btn" data-pct="15" onclick="setPct('p',this)">+15%</button>
+            <button class="pct-btn" data-pct="20" onclick="setPct('p',this)">+20%</button>
+          </div>
         </label>
       </div>
       <div>
@@ -463,10 +475,38 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
         </div>
       </div>
       <div id="d-err" style="font-size:11.5px;color:#c0392b;display:none;margin-top:-5px"></div>
-      <div id="d-especial-wrap" style="display:none">
-        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040">
-          <input type="checkbox" id="d-especial">
-          <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales — aplicar +10%</span>
+      <div id="d-especial-wrap">
+        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040;flex-direction:column;align-items:flex-start;gap:6px">
+          <div style="display:flex;align-items:center;gap:6px;width:100%;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px;flex:1">
+              <input type="checkbox" id="d-especial">
+              <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales</span>
+            </div>
+            <div style="display:flex;gap:4px">
+              <button class="pct-btn sel" data-pct="10" onclick="setPct('d',this)">+10%</button>
+              <button class="pct-btn" data-pct="15" onclick="setPct('d',this)">+15%</button>
+              <button class="pct-btn" data-pct="20" onclick="setPct('d',this)">+20%</button>
+            </div>
+          </div>
+          <div style="width:100%">
+            <span class="lbl" style="margin-bottom:3px;color:#7a5800">Fechas con tarifa especial</span>
+            <div class="g2">
+              <div>
+                <span class="lbl" style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em">Desde</span>
+                <div class="date-wrap">
+                  <input class="inp" id="d-esp-desde" type="text" placeholder="DD/MM/AAAA" autocomplete="off" onblur="normalizarFechaNd('d-esp-desde')">
+                  <button class="cal-btn" type="button" onclick="abrirCal('d-esp-desde')">📅</button>
+                </div>
+              </div>
+              <div>
+                <span class="lbl" style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em">Hasta</span>
+                <div class="date-wrap">
+                  <input class="inp" id="d-esp-hasta" type="text" placeholder="DD/MM/AAAA" autocomplete="off" onblur="normalizarFechaNd('d-esp-hasta')">
+                  <button class="cal-btn" type="button" onclick="abrirCal('d-esp-hasta')">📅</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </label>
       </div>
       <div>
@@ -1403,12 +1443,7 @@ function onMes() {
   var m = val('p-mes');
   var anio = $('p-anio') ? $('p-anio').value : '';
   $('mes-pill').textContent = m ? (MESES_ES[m]||m).toUpperCase()+' '+anio : '—';
-  // Show tarifas especiales only for August
-  var espWrap = $('p-especial-wrap');
-  if (espWrap) {
-    espWrap.style.display = (m === 'AGOSTO' || m === 'SEPTIEMBRE') ? 'block' : 'none';
-    if (m !== 'AGOSTO' && m !== 'SEPTIEMBRE' && $('p-especial')) $('p-especial').checked = false;
-  }
+
   poblarCatsPrecios();
   actuCard();
   refCard();
@@ -1595,9 +1630,7 @@ function getPrecioEfectivo(m, o, c) {
     }
   }
   // Apply tarifas especiales +10% (August only)
-  if ((m === 'AGOSTO' || m === 'SEPTIEMBRE') && $('p-especial') && $('p-especial').checked) {
-    pn = redondearEspecial(pn * 1.10);
-  }
+  if (especialChecked('p')) { pn = redondearEspecial(pn * getEspecialMult('p')); }
   return pn;
 }
 
@@ -1652,7 +1685,7 @@ function genPreciosMesCompleto(m) {
       }
       if (!pn) return;
       // Apply tarifas especiales +10%
-      if ((m === 'AGOSTO' || m === 'SEPTIEMBRE') && $('p-especial') && $('p-especial').checked) pn = redondearEspecial(pn * 1.10);
+      if (especialChecked('p')) pn = redondearEspecial(pn * getEspecialMult('p'));
       var notaFinde = (g.o==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? " _"+t("findeBaseDoble")+"_" : "";
       txt += "   🏨 *"+clT(c)+"*"+getCamas(g.o,c)+": *"+pesos(pn)+"*"+notaFinde+"\n";
@@ -1955,15 +1988,6 @@ function validarFechasDisp() {
   // Show tarifas especiales checkbox if dates overlap Aug 14-17 2026
   var espWrap = $('d-especial-wrap');
   if (espWrap && dIn) {
-    var aug14 = new Date(2026,7,14), aug17 = new Date(2026,7,17);
-    var sep4  = new Date(2026,8,4),  sep5  = new Date(2026,8,5);
-    aug14.setHours(0,0,0,0); aug17.setHours(0,0,0,0);
-    sep4.setHours(0,0,0,0);  sep5.setHours(0,0,0,0);
-    var overlapAug = dIn <= aug17 && (dOut ? dOut > aug14 : dIn >= aug14);
-    var overlapSep = dIn <= sep5  && (dOut ? dOut > sep4  : dIn >= sep4);
-    var overlap = overlapAug || overlapSep;
-    espWrap.style.display = overlap ? 'block' : 'none';
-    if (!overlap && $('d-especial')) $('d-especial').checked = false;
   }
   return true;
 }
@@ -2263,7 +2287,7 @@ function poblarCatsDisp() {
     return;
   }
   if (ocup==="SINGLE"||ocup==="DOBLE") cats=["Suite","Suite Familiar","Standard","Standard Mini","Economica"];
-  else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard","Standard Mini","Economica"];
+  else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard"];
   else if (ocup==="TRIPLE") cats=["Suite Familiar","Standard","Economica"];
   else if (ocup==="CUADRUPLE") cats=["Suite Familiar","Departamento","Standard"];
   else if (ocup==="QUINTUPLE") cats=["Suite Familiar","Departamento"];
@@ -2366,9 +2390,7 @@ function genDisp() {
           : P[mesKey].DOBLE[c];
       }
       // Apply tarifas especiales +10% if Aug 14-17 dates
-      if ((mesKey === 'AGOSTO' || mesKey === 'SEPTIEMBRE') && $('d-especial') && $('d-especial').checked) {
-        pn = redondearEspecial(pn * 1.10);
-      }
+      if (especialApplies_d(mesKey)) { pn = redondearEspecial(pn * getEspecialMult('d')); }
       return pn;
     };
 
@@ -2646,6 +2668,38 @@ function getWACatalogTexto() {
 }
 
 
+var _especialPct = {p: 10, d: 10};
+
+function setPct(prefix, btn) {
+  _especialPct[prefix] = parseInt(btn.getAttribute('data-pct'));
+  btn.closest('div').querySelectorAll('.pct-btn').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  if (prefix === 'p') actuCard();
+}
+
+function getEspecialMult(prefix) {
+  return 1 + _especialPct[prefix] / 100;
+}
+
+function especialChecked(prefix) {
+  var el = $(prefix === 'p' ? 'p-especial' : 'd-especial');
+  return el && el.checked;
+}
+
+function especialApplies_d(mesKey) {
+  // Check if mesKey overlaps with the configured especial date range in disponibilidad
+  if (!especialChecked('d')) return false;
+  var desdeEl = $('d-esp-desde'), hastaEl = $('d-esp-hasta');
+  if (!desdeEl || !desdeEl.value) return true; // no dates set = always applies
+  var desde = parseFecha(desdeEl.value), hasta = parseFecha(hastaEl && hastaEl.value ? hastaEl.value : desdeEl.value);
+  if (!desde) return true;
+  // Check if the month of desde/hasta matches mesKey
+  var meses = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+  var desdeM = meses[desde.getMonth()];
+  var hastaM = meses[hasta.getMonth()];
+  return desdeM === mesKey || hastaM === mesKey;
+}
+
 function redondearEspecial(pn) {
   // Round to nearest 1000: if remainder >= 400 → round up, else → round down
   var resto = pn % 1000;
@@ -2876,8 +2930,8 @@ function limpiarForm() {
   $("p-cats-wrap").innerHTML='<div style="font-size:11.5px;color:#9aaa9e;font-style:italic;padding:4px 2px">Elegí el mes y personas primero</div>';
   $("d-cats-wrap").innerHTML='<div style="font-size:11.5px;color:#9aaa9e;font-style:italic;padding:4px 2px">Elegí las personas primero</div>';
   $("p-finde-wrap").style.display="none";
-  if($('p-especial')){ $('p-especial').checked=false; $('p-especial-wrap').style.display='none'; }
-  if($('d-especial')){ $('d-especial').checked=false; $('d-especial-wrap').style.display='none'; }
+  if($('p-especial')) $('p-especial').checked=false;
+  if($('d-especial')) $('d-especial').checked=false;
   // Reset sin disponibilidad range states
   ND_RANGO.start=null; ND_RANGO.end=null;
   ALT_RANGO.start=null; ALT_RANGO.end=null;
