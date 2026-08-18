@@ -324,6 +324,9 @@ html.dark .cal-ym-item.sel{background:#162018;border-color:#2e5040;color:#a8c8a8
 html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
 </style>
 </head>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <body>
 
 <!-- CALENDAR POPUP (global) -->
@@ -1991,9 +1994,23 @@ function validarFechasDisp() {
     errEl.style.display="block"; return false;
   }
   errEl.style.display="none";
-  // Show tarifas especiales checkbox if dates overlap Aug 14-17 2026
+  // Show especial banner only if selected dates overlap with a saved period
   var espWrap = $('d-especial-wrap');
   if (espWrap && dIn) {
+    var matchesPeriod = false;
+    var savedPeriodos = _periodos.filter(function(p){ return p._saved; });
+    for (var pi = 0; pi < savedPeriodos.length; pi++) {
+      var sp = savedPeriodos[pi];
+      var spDesde = parseFecha(sp.desde), spHasta = parseFecha(sp.hasta||sp.desde);
+      if (!spDesde) continue;
+      spHasta = spHasta || spDesde;
+      if (dIn <= spHasta && (!dOut || dOut > spDesde)) { matchesPeriod = true; break; }
+    }
+    espWrap.style.display = matchesPeriod ? 'block' : 'none';
+    // Auto-check if a period matches (auto-apply)
+    var dEsp = $('d-especial');
+    if (dEsp && matchesPeriod) dEsp.checked = true;
+    if (dEsp && !matchesPeriod) dEsp.checked = false;
   }
   return true;
 }
@@ -2692,7 +2709,67 @@ function setPct(prefix, btn) {
   if (prefix === 'p') actuCard();
 }
 
-var _periodos = []; // [{desde, hasta, pct}]
+// ============================================================
+// FIREBASE — Períodos con tarifas especiales
+// ============================================================
+var _db = null;
+var PERIODOS_COLLECTION = 'periodos_especiales';
+
+(function initFirebase() {
+  var firebaseConfig = {
+    apiKey: "AIzaSyCfNMmtXTD6xM3x8FGALYaeL7G_kT6O1kQ",
+    authDomain: "respuestas-de-whatsapp.firebaseapp.com",
+    projectId: "respuestas-de-whatsapp",
+    storageBucket: "respuestas-de-whatsapp.firebasestorage.app",
+    messagingSenderId: "761865711661",
+    appId: "1:761865711661:web:1e5ba782066da82895c8a4"
+  };
+  try {
+    var app = firebase.initializeApp(firebaseConfig);
+    _db = firebase.firestore(app);
+    cargarPeriodosDeFirebase();
+  } catch(e) {
+    console.warn('Firebase init error:', e);
+  }
+})();
+
+function cargarPeriodosDeFirebase() {
+  if (!_db) return;
+  _db.collection(PERIODOS_COLLECTION).orderBy('orden').get()
+    .then(function(snapshot) {
+      _periodos = [];
+      snapshot.forEach(function(doc) {
+        var d = doc.data();
+        _periodos.push({ desde: d.desde||'', hasta: d.hasta||'', pct: d.pct||10, _saved: true, _id: doc.id });
+      });
+      renderPeriodos();
+    })
+    .catch(function(e) { console.warn('Error cargando períodos:', e); });
+}
+
+function guardarPeriodoEnFirebase(i) {
+  if (!_db) return;
+  var p = _periodos[i];
+  var data = { desde: p.desde, hasta: p.hasta, pct: p.pct, orden: i };
+  if (p._id) {
+    _db.collection(PERIODOS_COLLECTION).doc(p._id).set(data)
+      .then(function() { console.log('Período actualizado'); })
+      .catch(function(e) { console.warn('Error guardando:', e); });
+  } else {
+    _db.collection(PERIODOS_COLLECTION).add(data)
+      .then(function(ref) { _periodos[i]._id = ref.id; })
+      .catch(function(e) { console.warn('Error guardando:', e); });
+  }
+}
+
+function eliminarPeriodoDeFirebase(id) {
+  if (!_db || !id) return;
+  _db.collection(PERIODOS_COLLECTION).doc(id).delete()
+    .catch(function(e) { console.warn('Error eliminando:', e); });
+}
+
+// ============================================================
+var _periodos = [];
 
 function savePeriodosFromInputs() {
   _periodos.forEach(function(p, i) {
@@ -2726,6 +2803,7 @@ function savePeriodo(i) {
   if (dEl) _periodos[i].desde = dEl.value;
   if (hEl) _periodos[i].hasta = hEl.value;
   _periodos[i]._saved = true;
+  guardarPeriodoEnFirebase(i);
   renderPeriodos();
 }
 
@@ -2734,7 +2812,9 @@ function editPeriodo(i) {
   renderPeriodos();
 }
 function removePeriodo(i) {
+  var id = _periodos[i]._id;
   _periodos.splice(i, 1);
+  eliminarPeriodoDeFirebase(id);
   renderPeriodos();
 }
 
