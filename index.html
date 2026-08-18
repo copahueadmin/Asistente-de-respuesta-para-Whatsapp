@@ -253,6 +253,12 @@ html.dark #uso-interno-panel{background:#0a1a0e;border-top-color:#1a3020}
 html.dark #d-periodos-panel2{background:#0d1a10;border-color:#3a5030}
 html.dark #uso-interno-panel .nav-lbl{color:#8abcaa}
 html.dark #uso-interno-panel .btn-mini{border-color:#2a4030;color:#8abcaa}
+/* Especial yellow boxes dark mode */
+html.dark #p-especial-wrap>div,
+html.dark #d-especial-wrap>div{background:#2a1e00!important;border-color:#a07010!important}
+html.dark #p-especial-wrap span,
+html.dark #d-especial-wrap span{color:#d4a830!important}
+html.dark #d-especial-wrap label{color:#d4a830!important}
 html.dark .nav-lbl{color:#7a7870}
 html.dark .nb{color:#b0aea4}
 html.dark .nb:hover,html.dark .nb.on{background:#1c2418;color:#eae8e2}
@@ -484,15 +490,12 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
         </div>
       </div>
       <div id="d-err" style="font-size:11.5px;color:#c0392b;display:none;margin-top:-5px"></div>
-      <div id="d-especial-wrap">
-        <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#fff3cd;border:1.5px solid #f0c040;border-radius:7px;flex-wrap:wrap">
-          <input type="checkbox" id="d-especial">
-          <span style="color:#7a5800;font-weight:700;font-size:11.5px">🔺 Tarifa especial:</span>
-          <div style="display:flex;gap:3px;margin-left:auto">
-            <button class="pct-btn sel" data-pct="10" onclick="setPct('d',this)">+10%</button>
-            <button class="pct-btn" data-pct="15" onclick="setPct('d',this)">+15%</button>
-            <button class="pct-btn" data-pct="20" onclick="setPct('d',this)">+20%</button>
-          </div>
+      <div id="d-especial-wrap" style="display:none">
+        <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#fff3cd;border:1.5px solid #f0c040;border-radius:7px">
+          <span style="color:#7a5800;font-weight:700;font-size:11.5px;flex:1">🔺 Tarifas especiales activas</span>
+          <label style="display:flex;align-items:center;gap:4px;font-size:10.5px;color:#7a5800;cursor:pointer">
+            <input type="checkbox" id="d-especial" checked> Aplicar
+          </label>
         </div>
       </div>
       <div>
@@ -641,7 +644,7 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
     </div>
     <div id="d-periodos-wrap2" style="margin-top:2px">
       <button class="nb-grid" onclick="togglePeriodos()" style="width:100%;margin-top:2px">⚙ Períodos con tarifa especial</button>
-      <div id="d-periodos-panel2" style="display:none;margin-top:6px;border:1.5px solid #f0c040;border-radius:7px;padding:8px">
+      <div id="d-periodos-panel2" style="display:none;margin-top:6px;border:1.5px solid #d0a870;border-radius:7px;padding:8px;background:#fdf0e0">
         <div id="d-periodos-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
         <button class="btn-mini" onclick="addPeriodo()" style="width:100%">+ Agregar período</button>
       </div>
@@ -2712,10 +2715,24 @@ function togglePeriodos() {
 
 function addPeriodo() {
   savePeriodosFromInputs(); // save current before adding
-  _periodos.push({desde:'', hasta:'', pct:10});
+  _periodos.push({desde:'', hasta:'', pct:10, _saved:false});
   renderPeriodos();
 }
 
+
+function savePeriodo(i) {
+  var dEl = document.getElementById('periodo-desde-'+i);
+  var hEl = document.getElementById('periodo-hasta-'+i);
+  if (dEl) _periodos[i].desde = dEl.value;
+  if (hEl) _periodos[i].hasta = hEl.value;
+  _periodos[i]._saved = true;
+  renderPeriodos();
+}
+
+function editPeriodo(i) {
+  _periodos[i]._saved = false;
+  renderPeriodos();
+}
 function removePeriodo(i) {
   _periodos.splice(i, 1);
   renderPeriodos();
@@ -2724,49 +2741,63 @@ function removePeriodo(i) {
 function renderPeriodos() {
   var list = $('d-periodos-list');
   if (!list) return;
+  // Show/hide d-especial-wrap based on whether periods exist
+  var espWrap = $('d-especial-wrap');
+  var hasSaved = _periodos.some(function(p){return p._saved;});
+  if (espWrap) { espWrap.style.display = hasSaved ? 'block' : 'none'; var dEsp=$("d-especial"); if(dEsp&&hasSaved&&!dEsp.dataset.userSet) dEsp.checked=true; }
   if (_periodos.length === 0) {
     list.innerHTML = '<div style="font-size:11px;color:#9a9890;font-style:italic">Sin períodos configurados</div>';
     return;
   }
+  if (!_periodos._editState) _periodos._editState = {};
   list.innerHTML = '';
   _periodos.forEach(function(p, i) {
     var desdeId = 'periodo-desde-'+i;
     var hastaId = 'periodo-hasta-'+i;
+    var saved = p._saved;
     var row = document.createElement('div');
-    row.style.cssText = 'display:flex;flex-direction:column;gap:3px;padding:6px 8px;background:#fffdf0;border:1px solid #f0c040;border-radius:6px';
-    row.innerHTML =
+    row.style.cssText = 'display:flex;flex-direction:column;gap:4px;padding:7px 9px;background:'+(saved?'#f0fff4':'#fffcf0')+';border:1.5px solid '+(saved?'#5aaa7a':'#e0a830')+';border-radius:7px';
+
+    var headerHtml =
       '<div style="display:flex;align-items:center;gap:4px;justify-content:space-between">'
-        +'<span style="font-size:10.5px;font-weight:700;color:#7a5800">Período '+(i+1)+'</span>'
-        +'<select class="inp" style="width:72px;font-size:10.5px;padding:2px 4px" onchange="_periodos['+i+'].pct=parseInt(this.value)">'
-          +'<option value="10"'+(p.pct===10?' selected':'')+'>+10%</option>'
-          +'<option value="15"'+(p.pct===15?' selected':'')+'>+15%</option>'
-          +'<option value="20"'+(p.pct===20?' selected':'')+'>+20%</option>'
-        +'</select>'
-        +'<button onclick="removePeriodo('+i+')" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:15px;padding:0 3px;line-height:1">×</button>'
-      +'</div>'
-      +'<div class="g2">'
-        +'<div>'
-          +'<span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Desde</span>'
-          +'<div class="date-wrap">'
-            +'<input class="inp" id="'+desdeId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.desde+'" onblur="normalizarFechaNd(\''+desdeId+'\')" onfocus="this.placeholder=\'\'">'
-            +'<button class="cal-btn" type="button" onclick="abrirCal(\''+desdeId+'\')">📅</button>'
-          +'</div>'
+        +'<div style="display:flex;align-items:center;gap:5px">'
+          +'<span style="font-size:10.5px;font-weight:700;color:#7a5800">Período '+(i+1)+'</span>'
+          +'<select class="inp" style="width:68px;font-size:10.5px;padding:2px 4px"'+(saved?' disabled':'')
+            +' onchange="_periodos['+i+'].pct=parseInt(this.value)">'
+            +'<option value="10"'+(p.pct===10?' selected':'')+'>+10%</option>'
+            +'<option value="15"'+(p.pct===15?' selected':'')+'>+15%</option>'
+            +'<option value="20"'+(p.pct===20?' selected':'')+'>+20%</option>'
+          +'</select>'
         +'</div>'
-        +'<div>'
-          +'<span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Hasta</span>'
-          +'<div class="date-wrap">'
-            +'<input class="inp" id="'+hastaId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.hasta+'" onblur="normalizarFechaNd(\''+hastaId+'\')" onfocus="this.placeholder=\'\'">'
-            +'<button class="cal-btn" type="button" onclick="abrirCal(\''+hastaId+'\')">📅</button>'
-          +'</div>'
+        +'<div style="display:flex;gap:3px;align-items:center">'
+          +(saved
+            ? '<button onclick="editPeriodo('+i+')" style="background:#3a8a5a;border:none;border-radius:5px;cursor:pointer;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;line-height:1.5">✏ Editar</button>'
+            : '<button onclick="savePeriodo('+i+')" style="background:#2d7a4a;border:none;border-radius:5px;cursor:pointer;color:#fff;font-size:10.5px;font-weight:700;padding:3px 10px;line-height:1.5">✔ Guardar</button>'
+          )
+          +'<button onclick="removePeriodo('+i+')" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:16px;padding:0 2px;line-height:1">×</button>'
         +'</div>'
       +'</div>';
-    // Sync input changes to _periodos
+
+    var bodyHtml = saved
+      ? '<div style="font-size:11px;color:#1a5a3a;font-weight:600">'+p.desde+' → '+(p.hasta||p.desde)+' &nbsp;·&nbsp; +'+p.pct+'%</div>'
+      : '<div class="g2">'
+          +'<div><span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Desde</span>'
+          +'<div class="date-wrap"><input class="inp" id="'+desdeId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.desde+'" onblur="normalizarFechaNd(\''+desdeId+'\')" onfocus="this.placeholder=\'\'">'
+          +'<button class="cal-btn" type="button" onclick="abrirCal(\''+desdeId+'\')">📅</button></div></div>'
+          +'<div><span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Hasta</span>'
+          +'<div class="date-wrap"><input class="inp" id="'+hastaId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.hasta+'" onblur="normalizarFechaNd(\''+hastaId+'\')" onfocus="this.placeholder=\'\'">'
+          +'<button class="cal-btn" type="button" onclick="abrirCal(\''+hastaId+'\')">📅</button></div></div>'
+        +'</div>';
+
+    row.innerHTML = headerHtml + bodyHtml;
     list.appendChild(row);
-    // Sync on every keystroke
-    var dEl2 = document.getElementById(desdeId);
-    var hEl2 = document.getElementById(hastaId);
-    if (dEl2) dEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].desde = this.value; }; })(i));
-    if (hEl2) hEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].hasta = this.value; }; })(i));
+
+    if (!saved) {
+      var dEl2 = document.getElementById(desdeId);
+      var hEl2 = document.getElementById(hastaId);
+      if (dEl2) dEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].desde = this.value; }; })(i));
+      if (hEl2) hEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].hasta = this.value; }; })(i));
+    }
   });
 }
 
