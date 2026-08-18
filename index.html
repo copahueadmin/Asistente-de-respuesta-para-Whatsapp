@@ -94,10 +94,22 @@ html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 .btn-g:hover{background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);box-shadow:0 4px 20px rgba(30,64,48,.5)}
 
 
+.nb-grid{background:#dce4ec;border:1.5px solid #aabcce;border-radius:7px;padding:6px 4px;font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:700;color:#2a3c2e;cursor:pointer;text-align:center;transition:background .12s;line-height:1.3}
+.nb-grid:hover{background:linear-gradient(90deg,#b8cfe0 0%,#d4e6f4 100%);color:#122838}
+.nb-grid.on{background:linear-gradient(90deg,#6a9cbf 0%,#a8cce0 100%);color:#fff}
+html.dark .nb-grid{background:#141a12;border-color:#253025;color:#a8c8a8}
+html.dark .nb-grid:hover{background:#1e2e1a;color:#c8e8c0}
+html.dark .nb-grid.on{background:#1e3028;border-color:#4a7a5e;color:#c8e8c0}
 .pct-btn{background:#fff8e6;border:1.5px solid #f0c040;border-radius:5px;padding:2px 7px;font-size:10.5px;font-weight:700;cursor:pointer;color:#7a5800;transition:all .12s}
 .pct-btn:hover{background:#ffe8a0}
 .pct-btn.sel{background:#f0c040;border-color:#d4a800;color:#3a2800}
-html.dark .pct-btn{background:#2a2210;border-color:#a08020;color:#e0c060}
+html.dark .nb-grid{background:#dce4ec;border:1.5px solid #aabcce;border-radius:7px;padding:6px 4px;font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:700;color:#2a3c2e;cursor:pointer;text-align:center;transition:background .12s;line-height:1.3}
+.nb-grid:hover{background:linear-gradient(90deg,#b8cfe0 0%,#d4e6f4 100%);color:#122838}
+.nb-grid.on{background:linear-gradient(90deg,#6a9cbf 0%,#a8cce0 100%);color:#fff}
+html.dark .nb-grid{background:#141a12;border-color:#253025;color:#a8c8a8}
+html.dark .nb-grid:hover{background:#1e2e1a;color:#c8e8c0}
+html.dark .nb-grid.on{background:#1e3028;border-color:#4a7a5e;color:#c8e8c0}
+.pct-btn{background:#2a2210;border-color:#a08020;color:#e0c060}
 html.dark .pct-btn.sel{background:#a08020;color:#fff}border:1.5px solid #b2d4bf;border-radius:6px;padding:5px 13px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#2d6148;transition:all .15s}
 .p-mt-btn:hover{border-color:#1e4030;color:#1e4030;background:#d8ead2}
 .p-mt-btn.sel{background:#1e4030;border-color:#1e4030;color:#fff}
@@ -235,6 +247,12 @@ html.dark body{background:linear-gradient(145deg,#0d110e 0%,#111410 40%,#141a12 
 html.dark #drag-handle{background:#1a2e1e}
 html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 html.dark #sidebar{background:linear-gradient(180deg,#0e1a12 0%,#0b1510 100%);border-right-color:#1a2e1e;scrollbar-color:#1a2e1e #0b1510}
+#uso-interno-panel{background:#c8d8cc}
+#d-periodos-panel2{background:#c4d4c8}
+html.dark #uso-interno-panel{background:#0a1a0e;border-top-color:#1a3020}
+html.dark #d-periodos-panel2{background:#0d1a10;border-color:#3a5030}
+html.dark #uso-interno-panel .nav-lbl{color:#8abcaa}
+html.dark #uso-interno-panel .btn-mini{border-color:#2a4030;color:#8abcaa}
 html.dark .nav-lbl{color:#7a7870}
 html.dark .nb{color:#b0aea4}
 html.dark .nb:hover,html.dark .nb.on{background:#1c2418;color:#eae8e2}
@@ -338,17 +356,10 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       <button class="nb"   id="nb-checkin"          onclick="ir('checkin')">        <div class="dot"></div><span>🔑</span><span>Check-in / Check-out</span></button>
       <button class="nb"   id="nb-cancelacion"      onclick="ir('cancelacion')">    <div class="dot"></div><span>📋</span><span>Reserva y cancelación</span></button>
       <button class="nb"   id="nb-nodisponibilidad" onclick="ir('nodisponibilidad')"><div class="dot"></div><span>🚫</span><span>Sin disponibilidad</span></button>
-      <div class="nav-lbl" style="margin-top:10px;border-top:1px solid #cdd0c8;padding-top:8px">Uso interno</div>
-      <button class="nb"   id="nb-catalogo"         onclick="mostrarCatalogo()"><div class="dot"></div><span>📚</span><span>Catálogo Whatsapp</span></button>
-      <button class="nb"   id="nb-capacitaciones"   onclick="mostrarCapacitaciones()"><div class="dot"></div><span>🎓</span><span>Capacitaciones</span></button>
-      <button class="nb"                            onclick="window.open('https://roomings-hotelcopahue.netlify.app','_blank')"><div class="dot"></div><span>🏨</span><span>Armado de Roomings</span></button>
-      <button class="nb"   id="nb-fc"               onclick="genFC()">             <div class="dot"></div><span>🧾</span><span>Envío de FC en Cta. Cte.</span></button>
     </div>
 
-    <!-- ====== FC CTA CTE ====== -->
-    <div class="fp" id="fp-fc">
-      <div class="aviso">🧾 <strong>Uso interno</strong> — Genera el texto para solicitar el envío de comprobantes.</div>
-    </div>
+    <!-- ====== FC CTA CTE (hidden fp, kept for ir() compatibility) ====== -->
+    <div class="fp" id="fp-fc" style="display:none"></div>
 
     <!-- ====== PRECIOS ====== -->
     <div class="fp activo" id="fp-precios">
@@ -387,17 +398,15 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
         </div>
       </div>
       <div id="p-especial-wrap">
-        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040;flex-wrap:wrap;gap:6px">
-          <div style="display:flex;align-items:center;gap:6px;flex:1">
-            <input type="checkbox" id="p-especial" onchange="actuCard()">
-            <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales</span>
-          </div>
-          <div id="p-pct-btns" style="display:flex;gap:4px">
+        <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#fff3cd;border:1.5px solid #f0c040;border-radius:7px;flex-wrap:wrap">
+          <input type="checkbox" id="p-especial" onchange="actuCard()">
+          <span style="color:#7a5800;font-weight:700;font-size:11.5px">🔺 Tarifa especial:</span>
+          <div style="display:flex;gap:3px;margin-left:auto">
             <button class="pct-btn sel" data-pct="10" onclick="setPct('p',this)">+10%</button>
             <button class="pct-btn" data-pct="15" onclick="setPct('p',this)">+15%</button>
             <button class="pct-btn" data-pct="20" onclick="setPct('p',this)">+20%</button>
           </div>
-        </label>
+        </div>
       </div>
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
@@ -476,38 +485,15 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       </div>
       <div id="d-err" style="font-size:11.5px;color:#c0392b;display:none;margin-top:-5px"></div>
       <div id="d-especial-wrap">
-        <label class="chk-row" style="background:#fff3cd;border-color:#f0c040;flex-direction:column;align-items:flex-start;gap:6px">
-          <div style="display:flex;align-items:center;gap:6px;width:100%;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:6px;flex:1">
-              <input type="checkbox" id="d-especial">
-              <span style="color:#7a5800;font-weight:700">🔺 Tarifas especiales</span>
-            </div>
-            <div style="display:flex;gap:4px">
-              <button class="pct-btn sel" data-pct="10" onclick="setPct('d',this)">+10%</button>
-              <button class="pct-btn" data-pct="15" onclick="setPct('d',this)">+15%</button>
-              <button class="pct-btn" data-pct="20" onclick="setPct('d',this)">+20%</button>
-            </div>
+        <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#fff3cd;border:1.5px solid #f0c040;border-radius:7px;flex-wrap:wrap">
+          <input type="checkbox" id="d-especial">
+          <span style="color:#7a5800;font-weight:700;font-size:11.5px">🔺 Tarifa especial:</span>
+          <div style="display:flex;gap:3px;margin-left:auto">
+            <button class="pct-btn sel" data-pct="10" onclick="setPct('d',this)">+10%</button>
+            <button class="pct-btn" data-pct="15" onclick="setPct('d',this)">+15%</button>
+            <button class="pct-btn" data-pct="20" onclick="setPct('d',this)">+20%</button>
           </div>
-          <div style="width:100%">
-            <span class="lbl" style="margin-bottom:3px;color:#7a5800">Fechas con tarifa especial</span>
-            <div class="g2">
-              <div>
-                <span class="lbl" style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em">Desde</span>
-                <div class="date-wrap">
-                  <input class="inp" id="d-esp-desde" type="text" placeholder="DD/MM/AAAA" autocomplete="off" onblur="normalizarFechaNd('d-esp-desde')">
-                  <button class="cal-btn" type="button" onclick="abrirCal('d-esp-desde')">📅</button>
-                </div>
-              </div>
-              <div>
-                <span class="lbl" style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em">Hasta</span>
-                <div class="date-wrap">
-                  <input class="inp" id="d-esp-hasta" type="text" placeholder="DD/MM/AAAA" autocomplete="off" onblur="normalizarFechaNd('d-esp-hasta')">
-                  <button class="cal-btn" type="button" onclick="abrirCal('d-esp-hasta')">📅</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </label>
+        </div>
       </div>
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
@@ -644,6 +630,23 @@ html.dark #btn-dark{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7
       <button class="btn-g" onclick="genNodisponibilidad()">✦ Generar respuesta</button>
     </div>
 
+  <!-- ====== USO INTERNO (bottom fixed) ====== -->
+  <div id="uso-interno-panel" style="border-top:2px solid #8aaa96;padding:8px 10px;flex-shrink:0">
+    <div class="nav-lbl" style="margin-bottom:5px">Uso interno</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
+      <button class="nb-grid" id="nb-catalogo"       onclick="mostrarCatalogo()">📚 Catálogo WA</button>
+      <button class="nb-grid" id="nb-capacitaciones" onclick="mostrarCapacitaciones()">🎓 Capacitaciones</button>
+      <button class="nb-grid"                        onclick="window.open('https://roomings-hotelcopahue.netlify.app','_blank')">🏨 Armar Roomings</button>
+      <button class="nb-grid" id="nb-fc"             onclick="genFC()">🧾 FC Cta. Cte.</button>
+    </div>
+    <div id="d-periodos-wrap2" style="margin-top:2px">
+      <button class="nb-grid" onclick="togglePeriodos()" style="width:100%;margin-top:2px">⚙ Períodos con tarifa especial</button>
+      <div id="d-periodos-panel2" style="display:none;margin-top:6px;border:1.5px solid #f0c040;border-radius:7px;padding:8px">
+        <div id="d-periodos-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
+        <button class="btn-mini" onclick="addPeriodo()" style="width:100%">+ Agregar período</button>
+      </div>
+    </div>
+  </div>
   </div><!-- /sidebar -->
 
   <div id="drag-handle" title="Arrastrar para redimensionar"></div>
@@ -810,7 +813,7 @@ function getCamas(ocup, cat) {
   return tbl2 && tbl2[cat] ? ' _('+tbl2[cat]+')_' : '';
 }
 var CL = {Economica:"Económica"};
-var SEC = ["precios","disponibilidad","nodisponibilidad","servicios","ubicacion","checkin","cancelacion","fc"];
+var SEC = ["precios","disponibilidad","nodisponibilidad","servicios","ubicacion","checkin","cancelacion"];
 var TITLES = {precios:"Consulta de Precios",disponibilidad:"Consulta de Disponibilidad",nodisponibilidad:"Sin Disponibilidad",servicios:"Servicios del Hotel",ubicacion:"Ubicación y Cómo Llegar",checkin:"Check-in y Check-out",cancelacion:"Reserva y Cancelación",fc:"Envío de FC en Cta. Cte."};
 var LINKS = {"Suite":"https://drive.google.com/drive/folders/1JtwOcY8eH650LMuDdnVy6WmpfpIv85UF","Suite Familiar":"","Standard":"https://drive.google.com/drive/folders/1IXlFJVHQx2YcucT4MYGrISn50iIoMh5U","Standard Mini":"https://drive.google.com/drive/folders/1Uie-BRwxZYM7Tp90JqtED_99h8i0vi0k","Economica":"https://drive.google.com/drive/folders/1QvMkXFTKoSa1JPQ7Z0xpyF5fD8gGWg3G","Departamento":"https://drive.google.com/drive/folders/1X8DdnxPJ8jYtXjDIUDegih70CI91d8x1"};
 var RUTA_PDFS = "C:\\Users\\Recepcion\\Documents\\Hotel Copahue\\PDFs Habitaciones";
@@ -2234,6 +2237,9 @@ function selDia(d) {
       setTimeout(function(){ abrirCal("nd-hasta"); },50);
     } else if (CAL_STATE.inputId==="nd-alt-desde") {
       setTimeout(function(){ abrirCal("nd-alt-hasta"); },50);
+    } else if (CAL_STATE.inputId && CAL_STATE.inputId.indexOf("periodo-desde-") === 0) {
+      var periodoIdx = CAL_STATE.inputId.replace("periodo-desde-","");
+      setTimeout(function(){ abrirCal("periodo-hasta-"+periodoIdx); },50);
     } else {
       ocultarCal();
     }
@@ -2287,7 +2293,7 @@ function poblarCatsDisp() {
     return;
   }
   if (ocup==="SINGLE"||ocup==="DOBLE") cats=["Suite","Suite Familiar","Standard","Standard Mini","Economica"];
-  else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard"];
+  else if (ocup==="DOBLE_TWIN") cats=["Suite","Standard","Standard Mini","Economica"];
   else if (ocup==="TRIPLE") cats=["Suite Familiar","Standard","Economica"];
   else if (ocup==="CUADRUPLE") cats=["Suite Familiar","Departamento","Standard"];
   else if (ocup==="QUINTUPLE") cats=["Suite Familiar","Departamento"];
@@ -2390,7 +2396,10 @@ function genDisp() {
           : P[mesKey].DOBLE[c];
       }
       // Apply tarifas especiales +10% if Aug 14-17 dates
-      if (especialApplies_d(mesKey)) { pn = redondearEspecial(pn * getEspecialMult('d')); }
+      if (especialChecked('d')) {
+        var mult = getEspecialMultForDates(dIn, dOut);
+        if (mult) pn = redondearEspecial(pn * mult);
+      }
       return pn;
     };
 
@@ -2674,11 +2683,112 @@ function setPct(prefix, btn) {
   _especialPct[prefix] = parseInt(btn.getAttribute('data-pct'));
   btn.closest('div').querySelectorAll('.pct-btn').forEach(function(b){ b.classList.remove('sel'); });
   btn.classList.add('sel');
+  // Auto-check the especial checkbox
+  var chk = $(prefix === 'p' ? 'p-especial' : 'd-especial');
+  if (chk) chk.checked = true;
   if (prefix === 'p') actuCard();
 }
 
-function getEspecialMult(prefix) {
-  return 1 + _especialPct[prefix] / 100;
+var _periodos = []; // [{desde, hasta, pct}]
+
+function savePeriodosFromInputs() {
+  _periodos.forEach(function(p, i) {
+    var dEl = document.getElementById('periodo-desde-'+i);
+    var hEl = document.getElementById('periodo-hasta-'+i);
+    var sEl = document.querySelector('#d-periodos-list div:nth-child('+(i+1)+') select');
+    if (dEl) p.desde = dEl.value;
+    if (hEl) p.hasta = hEl.value;
+    if (sEl) p.pct = parseInt(sEl.value);
+  });
+}
+
+function togglePeriodos() {
+  var panel = $('d-periodos-panel2') || $('d-periodos-panel');
+  var opening = panel.style.display === 'none';
+  if (!opening) savePeriodosFromInputs(); // save before hiding
+  panel.style.display = opening ? 'block' : 'none';
+  if (opening) renderPeriodos();
+}
+
+function addPeriodo() {
+  savePeriodosFromInputs(); // save current before adding
+  _periodos.push({desde:'', hasta:'', pct:10});
+  renderPeriodos();
+}
+
+function removePeriodo(i) {
+  _periodos.splice(i, 1);
+  renderPeriodos();
+}
+
+function renderPeriodos() {
+  var list = $('d-periodos-list');
+  if (!list) return;
+  if (_periodos.length === 0) {
+    list.innerHTML = '<div style="font-size:11px;color:#9a9890;font-style:italic">Sin períodos configurados</div>';
+    return;
+  }
+  list.innerHTML = '';
+  _periodos.forEach(function(p, i) {
+    var desdeId = 'periodo-desde-'+i;
+    var hastaId = 'periodo-hasta-'+i;
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;flex-direction:column;gap:3px;padding:6px 8px;background:#fffdf0;border:1px solid #f0c040;border-radius:6px';
+    row.innerHTML =
+      '<div style="display:flex;align-items:center;gap:4px;justify-content:space-between">'
+        +'<span style="font-size:10.5px;font-weight:700;color:#7a5800">Período '+(i+1)+'</span>'
+        +'<select class="inp" style="width:72px;font-size:10.5px;padding:2px 4px" onchange="_periodos['+i+'].pct=parseInt(this.value)">'
+          +'<option value="10"'+(p.pct===10?' selected':'')+'>+10%</option>'
+          +'<option value="15"'+(p.pct===15?' selected':'')+'>+15%</option>'
+          +'<option value="20"'+(p.pct===20?' selected':'')+'>+20%</option>'
+        +'</select>'
+        +'<button onclick="removePeriodo('+i+')" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:15px;padding:0 3px;line-height:1">×</button>'
+      +'</div>'
+      +'<div class="g2">'
+        +'<div>'
+          +'<span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Desde</span>'
+          +'<div class="date-wrap">'
+            +'<input class="inp" id="'+desdeId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.desde+'" onblur="normalizarFechaNd(\''+desdeId+'\')" onfocus="this.placeholder=\'\'">'
+            +'<button class="cal-btn" type="button" onclick="abrirCal(\''+desdeId+'\')">📅</button>'
+          +'</div>'
+        +'</div>'
+        +'<div>'
+          +'<span style="font-size:9px;color:#9a9890;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px">Hasta</span>'
+          +'<div class="date-wrap">'
+            +'<input class="inp" id="'+hastaId+'" type="text" placeholder="DD/MM/AAAA" style="font-size:11px;padding:3px 6px" value="'+p.hasta+'" onblur="normalizarFechaNd(\''+hastaId+'\')" onfocus="this.placeholder=\'\'">'
+            +'<button class="cal-btn" type="button" onclick="abrirCal(\''+hastaId+'\')">📅</button>'
+          +'</div>'
+        +'</div>'
+      +'</div>';
+    // Sync input changes to _periodos
+    list.appendChild(row);
+    // Sync on every keystroke
+    var dEl2 = document.getElementById(desdeId);
+    var hEl2 = document.getElementById(hastaId);
+    if (dEl2) dEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].desde = this.value; }; })(i));
+    if (hEl2) hEl2.addEventListener('input', (function(idx){ return function(){ _periodos[idx].hasta = this.value; }; })(i));
+  });
+}
+
+function getEspecialMultForDates(dIn, dOut) {
+  if (_periodos.length > 0) {
+    for (var i = 0; i < _periodos.length; i++) {
+      // Read from live inputs if rendered
+      var dEl = document.getElementById('periodo-desde-'+i);
+      var hEl = document.getElementById('periodo-hasta-'+i);
+      var desdeStr = dEl ? dEl.value : _periodos[i].desde;
+      var hastaStr = hEl ? hEl.value : (_periodos[i].hasta || desdeStr);
+      var pDesde = parseFecha(desdeStr), pHasta = parseFecha(hastaStr||desdeStr);
+      if (dEl && dEl.value) _periodos[i].desde = dEl.value;
+      if (hEl && hEl.value) _periodos[i].hasta = hEl.value;
+      if (!pDesde) continue;
+      pHasta = pHasta || pDesde;
+      var overlap = dIn <= pHasta && (!dOut || dOut > pDesde);
+      if (overlap) return 1 + (_periodos[i].pct || 10) / 100;
+    }
+    return null;
+  }
+  return getEspecialMult('d');
 }
 
 function especialChecked(prefix) {
