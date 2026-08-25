@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --color-copahue-black: #14140f;
+  --color-copahue-black-soft: #1f2019;
+  --color-copahue-green: #1f3d2b;
+  --color-copahue-green-dark: #14261b;
+  --color-copahue-green-light: #3c6b4a;
+  --color-copahue-gold: #c9a227;
+  --color-copahue-gold-light: #e6cd7a;
+  --color-copahue-gold-dark: #9c7c1a;
+  --color-copahue-cream: #faf6ec;
+  --color-copahue-cream-dark: #f0e7d1;
+
+  /* Tonos sólidos precalculados (sin color-mix/oklab) para usar en la hoja de
+     impresión: html2canvas (usado para exportar a PDF) todavía no interpreta
+     los colores con transparencia que genera Tailwind v4, así que ahí se usan
+     estas variantes sólidas en vez de las utilidades con "/opacidad". */
+  --color-print-ink-70: #5a5a57;
+  --color-print-ink-50: #8a8a87;
+  --color-print-ink-45: #96968d;
+  --color-print-ink-40: #a1a19f;
+  --color-print-gold-30: #efe3be;
+  --color-print-gold-20: #f4ecd4;
+  --color-print-gold-10: #faf6e9;
+  --color-print-row-tint: #fdfcf7;
+  --color-print-divider-strong: #cbb46b;
+
+  /* Lufga no está disponible en Google Fonts (única fuente externa permitida
+     aquí), así que se usa Plus Jakarta Sans como reemplazo más cercano:
+     misma familia geométrica y redondeada que Lufga / Google Sans. */
+  --font-display: "Plus Jakarta Sans", "Google Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Google Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-copahue-cream);
+  color: var(--color-copahue-black);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* Columna de precios: dígitos de ancho uniforme para que no "salten" al
+   escribir/actualizar. La alineación (izquierda/centro/derecha) la define
+   cada uso según el contexto (columna de precio, de descuento, etc.). */
+.price-figure {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
+}
+
+/* ---- Impresión A4 ----
+   Las hojas (#print-area > div) ya están armadas como páginas A4 completas
+   (width:210mm, minHeight:297mm, padding:10mm actúa como el margen interno),
+   así que acá el margen de @page se deja en 0 para no sumarle un margen extra
+   del navegador encima del propio padding de cada hoja. */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  html, body, #print-area, #print-area * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  body * {
+    visibility: hidden;
+  }
+  #print-area, #print-area * {
+    visibility: visible;
+  }
+  /* Antes esto era position:absolute+inset:0 con overflow-auto (heredado de la
+     vista previa en pantalla) sin resetear: el cuadro quedaba con una altura
+     fija (la de una sola página) y scrollbars, así que sólo se veía/imprimía
+     el primer mes. position:fixed tampoco sirve: Chrome no pagina el
+     contenido que queda fuera del flujo normal (fixed/absolute), así que
+     con eso solo se imprimía la primera hoja. La solución es dejar
+     #print-area en flujo normal (position:static) —para que el contenido
+     pueda paginarse en varias hojas— y en cambio resetear el padding/ancho
+     del <main> de la app (que es lo que dejaba un margen crema alrededor). */
+  main {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #print-area {
+    position: static;
+    display: block;
+    overflow: visible;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    border-radius: 0;
+  }
+  #print-area > * {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
