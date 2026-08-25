@@ -42,8 +42,9 @@ button,input,select,textarea,span,.nb,.lbl,.inp,.btn-g,.btn-mini,.btn-clr,.chip-
 html.dark #drag-handle{background:#253025}
 html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
 /* SIDEBAR */
-#sidebar{background:#e8eae4;border-right:none;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-color:#bec2b8 #e8eae4}
+#sidebar{background:#e8eae4;border-right:none;display:flex;flex-direction:column;overflow:hidden}
 #nav{padding:6px 10px 0;display:flex;flex-direction:column;gap:0px;flex-shrink:0}
+#fp-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-color:#bec2b8 #e8eae4;display:flex;flex-direction:column}
 .nav-lbl{font-size:clamp(9px,0.85vw,11px);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1e3028;padding:0 8px;margin:4px 0 2px}
 .nb{display:flex;align-items:center;gap:7px;padding:3px 10px;border:none;background:transparent;border-radius:7px;cursor:pointer;width:100%;font-family:'Outfit',sans-serif;font-size:clamp(13px,1.1vw,16px);font-weight:600;color:#2a3c2e;transition:background .12s;text-align:left}
 .nb:hover{background:linear-gradient(90deg,#a8ccb4 0%,#d4eadc 100%);color:#122818;font-weight:700}
@@ -222,7 +223,8 @@ html.dark #btn-clr:hover{background:#1a2e1e;border-color:#4a7a5e;color:#a8e4c0}
 html.dark body{background:linear-gradient(145deg,#0d110e 0%,#111410 40%,#141a12 100%);color:#eae8e2}
 html.dark #drag-handle{background:#1a2e1e}
 html.dark #drag-handle:hover,html.dark #drag-handle.dragging{background:#2e5040}
-html.dark #sidebar{background:linear-gradient(180deg,#0e1a12 0%,#0b1510 100%);border-right-color:#1a2e1e;scrollbar-color:#1a2e1e #0b1510}
+html.dark #sidebar{background:linear-gradient(180deg,#0e1a12 0%,#0b1510 100%);border-right-color:#1a2e1e}
+html.dark #fp-scroll{scrollbar-color:#1a2e1e #0b1510}
 #uso-interno-panel{background:#c8d8cc}
 #d-periodos-panel2{background:#c4d4c8}
 html.dark #uso-interno-panel{background:#0a1a0e;border-top-color:#1a3020}
@@ -299,18 +301,24 @@ html.dark .cal-ym-item:hover{background:#1a201a;border-color:#2e5040}
 html.dark .cal-ym-item.sel{background:#162018;border-color:#2e5040;color:#a8c8a8}
 html.dark #btn-dark,html.dark #tb-config-panel{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
 /* ===== Mascota Copito: esquina inferior derecha de la página ===== */
-#mascot{position:fixed;right:22px;bottom:12px;z-index:60;display:flex;flex-direction:row-reverse;align-items:flex-end;gap:10px;pointer-events:none;user-select:none}
-#mascot .mascot-avatar{position:relative;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1e4030 0%,#2d6148 100%);border:2.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 5px 18px rgba(0,0,0,.3);animation:mascotBob 3.2s ease-in-out infinite;flex-shrink:0;pointer-events:auto;cursor:default}
-#mascot .mascot-hand{position:absolute;top:-4px;right:-8px;font-size:20px;transform-origin:70% 75%;animation:mascotWave 2.4s ease-in-out infinite}
+#mascot{position:fixed;right:22px;bottom:12px;z-index:60;display:flex;flex-direction:row-reverse;align-items:flex-end;gap:12px;pointer-events:none;user-select:none}
+#mascot .mascot-avatar{position:relative;width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#1e4030 0%,#2d6148 100%);border:3px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 6px 20px rgba(0,0,0,.32);animation:mascotBob 3.2s ease-in-out infinite;flex-shrink:0;pointer-events:auto;cursor:default}
+#mascot .mascot-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:1}
+#mascot .mascot-face-base{animation:mascotSmileHide 2.4s ease-in-out infinite}
+#mascot .mascot-face-smile{animation:mascotSmileShow 2.4s ease-in-out infinite}
+#mascot .mascot-hand{position:absolute;top:-6px;right:-10px;font-size:28px;transform-origin:70% 75%;animation:mascotWave 2.4s ease-in-out infinite}
 #mascot .mascot-bubble{position:relative;background:#fff;color:#1e4030;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:700;line-height:1.45;padding:10px 15px;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.2);max-width:250px;opacity:0;transform:translateY(8px);animation:mascotIntro 8s ease-in-out forwards;pointer-events:none}
 #mascot .mascot-bubble::after{content:'';position:absolute;width:10px;height:10px;background:inherit;right:18px;bottom:-3px;transform:rotate(45deg);border-radius:2px}
 #mascot .mascot-avatar:hover ~ .mascot-bubble{opacity:1 !important;transform:translateY(0) !important;animation:none !important}
 @keyframes mascotBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes mascotWave{0%,55%,100%{transform:rotate(0deg)}8%{transform:rotate(-16deg)}16%{transform:rotate(12deg)}24%{transform:rotate(-14deg)}32%{transform:rotate(10deg)}40%{transform:rotate(0deg)}}
+/* La sonrisa (con dientes) aparece en el mismo tramo del ciclo en que se mueve la mano */
+@keyframes mascotSmileShow{0%,55%,100%{opacity:0}8%,32%{opacity:1}40%{opacity:0}}
+@keyframes mascotSmileHide{0%,55%,100%{opacity:1}8%,32%{opacity:0}40%{opacity:1}}
 @keyframes mascotIntro{0%{opacity:0;transform:translateY(8px)}6%{opacity:1;transform:translateY(0)}72%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(8px)}}
 html.dark #mascot .mascot-bubble{background:#1a2e1e;color:#c8e8c0;box-shadow:0 4px 16px rgba(0,0,0,.55)}
 html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
-@media (max-width:640px){#mascot{right:10px;bottom:8px}#mascot .mascot-avatar{width:44px;height:44px;font-size:22px}#mascot .mascot-bubble{max-width:170px;font-size:11.5px;padding:8px 12px}}
+@media (max-width:640px){#mascot{right:10px;bottom:8px}#mascot .mascot-avatar{width:58px;height:58px;font-size:28px}#mascot .mascot-hand{font-size:22px}#mascot .mascot-bubble{max-width:170px;font-size:11.5px;padding:8px 12px}}
 </style>
 </head>
 <!-- Firebase -->
@@ -354,6 +362,7 @@ html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
       <button class="nb"   id="nb-cancelacion"      onclick="ir('cancelacion')">    <div class="dot"></div><span>📋</span><span>Reserva y cancelación</span></button>
       <button class="nb"   id="nb-nodisponibilidad" onclick="ir('nodisponibilidad')"><div class="dot"></div><span>🚫</span><span>Sin disponibilidad</span></button>
     </div>
+    <div id="fp-scroll">
     <!-- ====== FC CTA CTE (hidden fp, kept for ir() compatibility) ====== -->
     <div class="fp" id="fp-fc" style="display:none"></div>
     <!-- ====== PRECIOS ====== -->
@@ -616,7 +625,8 @@ html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
       </div>
       <button class="btn-g" onclick="genNodisponibilidad()">✦ Generar respuesta</button>
     </div>
-  <!-- ====== USO INTERNO (bottom fixed) ====== -->
+    </div><!-- /fp-scroll -->
+  <!-- ====== USO INTERNO (bottom fixed, siempre visible) ====== -->
   <div id="uso-interno-panel" style="border-top:2px solid #8aaa96;padding:8px 10px;flex-shrink:0">
     <div class="nav-lbl" style="margin-bottom:5px">Uso interno</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
@@ -691,7 +701,11 @@ html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
   </div>
 </div>
 <div id="mascot" aria-hidden="true">
-  <div class="mascot-avatar">🙂<span class="mascot-hand">👋</span></div>
+  <div class="mascot-avatar">
+    <span class="mascot-face mascot-face-base">🙂</span>
+    <span class="mascot-face mascot-face-smile">😁</span>
+    <span class="mascot-hand">👋</span>
+  </div>
   <div class="mascot-bubble">¡Hola! Soy Copito, estoy para ayudarte a responder esas consultitas 🫶</div>
 </div>
 <script>
