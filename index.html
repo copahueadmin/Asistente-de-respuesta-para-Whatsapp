@@ -300,6 +300,7 @@ html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
 #nlq-feedback{font-family:'Outfit',sans-serif;font-size:10.5px;line-height:1.45;display:none}
 #nlq-feedback.ok{color:#2d6148}
 #nlq-feedback.err{color:#c0392b}
+#nlq-feedback.chat{color:#3d6b8a;font-weight:600}
 #mascot .mascot-chat-input-row{display:flex;align-items:flex-end;gap:6px;padding:8px 10px 10px;border-top:1px solid #e6ece7}
 #nlq-input{flex:1;resize:none;border:1.5px solid #b2d4bf;border-radius:8px;padding:6px 8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;color:#0f1e14;background:#f0f7f3;outline:none;transition:border-color .15s}
 #nlq-input:focus{border-color:#1e4030}
@@ -312,6 +313,7 @@ html.dark #nlq-input{background:#0d1f14;border-color:#2e5040;color:#eae8e2}
 html.dark #nlq-input:focus{border-color:#4a7a5e}
 html.dark #nlq-feedback.ok{color:#8dcca0}
 html.dark #nlq-feedback.err{color:#ff6b5f}
+html.dark #nlq-feedback.chat{color:#7fb3d5}
 @media (max-width:640px){#mascot{right:10px;bottom:8px;width:58px;height:58px}#mascot .mascot-avatar{width:58px;height:58px;font-size:28px}#mascot .mascot-face-smile{font-size:24px}#mascot .mascot-hand{font-size:22px}#mascot .mascot-bubble{right:42px;bottom:42px;max-width:150px;font-size:11.5px;padding:7px 11px}#mascot .mascot-chat{width:238px}}
 </style>
 </head>
@@ -690,7 +692,7 @@ html.dark #nlq-feedback.err{color:#ff6b5f}
   <div class="mascot-bubble" aria-hidden="true">¡Hola! Soy Copito, tocame para escribirme una consulta 🫶</div>
   <div class="mascot-chat" id="mascot-chat">
     <div class="mascot-chat-head">
-      <span>✨ Escribile a Copito</span>
+      <span>✨ Copito responde</span>
       <button type="button" class="mascot-chat-close" onclick="toggleMascotChat(false)" aria-label="Cerrar chat">✕</button>
     </div>
     <div class="mascot-chat-body">
@@ -2920,7 +2922,7 @@ function abrirCarpeta() {
   link.click();
 }
 // ============================================================
-// CONSULTA EN LENGUAJE NATURAL ("Escribile a Copito")
+// CONSULTA EN LENGUAJE NATURAL ("Copito responde")
 // Interpreta un pedido en texto libre (ej: "necesito precios para una
 // doble el 3, 4 y 5 de octubre en todas las categorías"), detecta a qué
 // sección corresponde, completa el formulario de esa sección igual que si
@@ -2994,29 +2996,52 @@ function nlqTodasCategorias(t) {
 }
 // Busca un nombre de mes en el texto y, en la ventana de caracteres justo
 // antes de él (donde suele ir el/los día(s): "el 3, 4 y 5 de octubre" o
-// "del 3 al 5 de octubre"), extrae los números de día mencionados.
+// "del 3 al 5 de octubre"), extrae los números de día mencionados. Si no
+// hay ningún mes escrito con nombre, prueba con notación numérica tipo
+// "10 y 11/10", "10/10 al 15/10" o "3/10" — ahí el número después de la
+// barra "/" representa el mes (por número), así que el mes se puede poner
+// tanto por nombre como por número.
 function nlqExtraerFechas(t) {
   var mesIdx = -1, mesNum = null;
   for (var k in NLQ_MESES) {
     var idx = t.indexOf(k);
     if (idx>=0 && (mesIdx===-1 || idx<mesIdx)) { mesIdx = idx; mesNum = NLQ_MESES[k]; }
   }
-  if (mesNum===null) return null;
-  var anioMatch = t.match(/\b(20\d{2})\b/);
-  var anio = anioMatch ? parseInt(anioMatch[1],10) : null;
-  var ventana = t.substring(Math.max(0, mesIdx-40), mesIdx);
-  var rango = ventana.match(/(\d{1,2})\s*(?:al|a)\s*(\d{1,2})\s*(?:de\s*)?$/);
-  var dias = [];
-  var esRango = false;
-  if (rango) {
-    dias = [parseInt(rango[1],10), parseInt(rango[2],10)];
-    esRango = true;
-  } else {
-    var re = /\b(\d{1,2})\b(?!\s*(?:persona|noche|%))/g, mm;
-    while ((mm = re.exec(ventana))) dias.push(parseInt(mm[1],10));
+  if (mesNum!==null) {
+    var anioMatch = t.match(/\b(20\d{2})\b/);
+    var anio = anioMatch ? parseInt(anioMatch[1],10) : null;
+    var ventana = t.substring(Math.max(0, mesIdx-40), mesIdx);
+    var rango = ventana.match(/(\d{1,2})\s*(?:al|a)\s*(\d{1,2})\s*(?:de\s*)?$/);
+    var dias = [];
+    var esRango = false;
+    if (rango) {
+      dias = [parseInt(rango[1],10), parseInt(rango[2],10)];
+      esRango = true;
+    } else {
+      var re = /\b(\d{1,2})\b(?!\s*(?:persona|noche|%))/g, mm;
+      while ((mm = re.exec(ventana))) dias.push(parseInt(mm[1],10));
+    }
+    dias = dias.filter(function(d){ return d>=1 && d<=31; });
+    return { mes:mesNum, anio:anio, dias:dias, esRango:esRango };
   }
-  dias = dias.filter(function(d){ return d>=1 && d<=31; });
-  return { mes:mesNum, anio:anio, dias:dias, esRango:esRango };
+  // Sin mes por nombre: buscar notación numérica con "/" (día/mes[/año]).
+  // Cubre "10 y 11/10", "10 al 15/10", "3/10" y "10/10 al 15/10".
+  var slash = t.match(/(\d{1,2})\s*(?:(al|a|y|,)\s*(\d{1,2})(?:\/\d{1,2})?)?\s*\/\s*(\d{1,2})(?:\/(\d{2,4}))?/);
+  if (slash) {
+    var mesNumero = parseInt(slash[4],10);
+    if (mesNumero>=1 && mesNumero<=12) {
+      var diasNum = [parseInt(slash[1],10)];
+      var esRangoNum = false;
+      if (slash[3]) {
+        diasNum.push(parseInt(slash[3],10));
+        esRangoNum = (slash[2]==='al' || slash[2]==='a');
+      }
+      diasNum = diasNum.filter(function(d){ return d>=1 && d<=31; });
+      var anioNum = slash[5] ? (slash[5].length===2 ? 2000+parseInt(slash[5],10) : parseInt(slash[5],10)) : null;
+      return { mes:mesNumero, anio:anioNum, dias:diasNum, esRango:esRangoNum };
+    }
+  }
+  return null;
 }
 function nlqResolverAnio(mes, anioTexto) {
   if (anioTexto) return anioTexto;
@@ -3195,13 +3220,61 @@ function nlqNoDisponibilidad(t) {
     $('nlq-input').value = '';
   }
 }
+// Charla fuera de tema (saludos, "¿cómo estás?", "¿de dónde sos?", clima,
+// "¿quién sos?", agradecimientos, etc.): Copito responde algo — aunque no
+// sea información real — para que se sienta más como hablarle a una
+// persona que a un robot que solo tira errores. Se elige entre varias
+// variantes para que no suene siempre igual.
+var NLQ_CHARLA = {
+  saludo: [
+    '¡Todo bien por acá, gracias! 😊 ¿En qué te ayudo con alguna respuesta?',
+    '¡Excelente, con toda la buena onda! ¿Necesitás que te arme alguna respuesta?',
+    '¡Todo tranqui por acá! Contame qué necesitás y lo resolvemos rápido.'
+  ],
+  origen: [
+    'Soy de acá nomás, del Hotel Copahue en Junín 🏨 ¿Te ayudo con algo?',
+    'Vivo prácticamente en la recepción del Hotel Copahue 😄 ¿En qué te doy una mano?'
+  ],
+  clima: [
+    'No tengo forma de chequear el clima real, ¡pero seguro en Junín está lindo! ☀️',
+    'Ni idea del clima de hoy, soy más de tarifas que de meteorología 😅 ¿Te ayudo con algo del hotel?'
+  ],
+  identidad: [
+    'Soy Copito 🐣, el asistente del Hotel Copahue. Estoy para ayudarte a armar respuestas rápido.',
+    'Copito, para servirte. Mi especialidad es armar respuestas de precios y disponibilidad en segundos.'
+  ],
+  gracias: [
+    '¡De nada! Para eso estoy 🙌',
+    '¡Un placer! Cualquier cosa, acá ando.'
+  ]
+};
+function _nlqPick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function nlqRespuestaConversacional(t) {
+  if (/gracias/.test(t)) return _nlqPick(NLQ_CHARLA.gracias);
+  if (/quien (sos|eres)|que sos\b|sos (un |una )?(bot|ia)\b|eres (un |una )?(bot|ia)\b|\brobot\b/.test(t)) return _nlqPick(NLQ_CHARLA.identidad);
+  if (/de donde (sos|eres)|donde vivis|donde naciste/.test(t)) return _nlqPick(NLQ_CHARLA.origen);
+  if (/\bclima\b|el tiempo esta|va a llover|hace frio|hace calor/.test(t)) return _nlqPick(NLQ_CHARLA.clima);
+  if (/como estas|como andas|que tal\??$|todo bien\??$|como te va|como va\b|^hola\b|^buenas\b|^buen dia\b/.test(t)) return _nlqPick(NLQ_CHARLA.saludo);
+  return null;
+}
 function procesarConsultaNatural() {
   var raw = ($('nlq-input').value||'').trim();
   if (!raw) { nlqFeedback('Escribí lo que necesitás primero.', 'err'); return; }
   var t = _nlqNorm(raw);
   var sec = nlqDetectarSeccion(t);
   if (!sec) {
-    nlqFeedback('No pude identificar qué tipo de consulta es. Probá con palabras como "precios", "disponibilidad", "servicios", "check-in", "cancelación" o "ubicación".', 'err');
+    // No apareció ninguna palabra clave de sección, pero si igual se
+    // menciona ocupación/categoría y una fecha (ej: "doble standard para
+    // el 10 y 11/10"), alcanza para asumir que es un pedido de precios sin
+    // que haga falta escribir la palabra "precio".
+    var tieneOcupOCategoria = !!nlqOcupacion(t) || nlqCategorias(t).length>0 || nlqTodasCategorias(t);
+    var tieneFecha = !!nlqExtraerFechas(t);
+    if (tieneOcupOCategoria && tieneFecha) sec = 'precios';
+  }
+  if (!sec) {
+    var charla = nlqRespuestaConversacional(t);
+    if (charla) { nlqFeedback(charla, 'chat'); $('nlq-input').value = ''; return; }
+    nlqFeedback('Mmm, no estoy seguro de haber entendido 😅 Probá con algo como "doble para el 10 y 11 de octubre" o pedime "disponibilidad", "servicios", "check-in", "cancelación" o "ubicación".', 'err');
     return;
   }
   try {
