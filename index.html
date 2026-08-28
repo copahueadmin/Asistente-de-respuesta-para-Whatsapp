@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hotel Copahue — Copito</title>
+<title>Hotel Copahue — Copahuito</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -90,10 +90,10 @@ html.dark .nb-grid.on{background:#1e3028;border-color:#4a7a5e;color:#c8e8c0}
 html.dark .pct-btn{background:#162018;border-color:#2e5040;color:#8dcca0}
 html.dark .pct-btn:hover{background:#1e2e1a}
 html.dark .pct-btn.sel{background:#2e5040;border-color:#4a7a5e;color:#fff}
+.p-mt-btn{background:#e4e7e0;border:1.5px solid #bec2b8;border-radius:6px;padding:5px 11px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#4a6a54;transition:all .15s}
 .p-mt-btn:hover{border-color:#1e4030;color:#1e4030;background:#d8ead2}
 .p-mt-btn.sel{background:#1e4030;border-color:#1e4030;color:#fff}
-html.dark 
-.p-mt-btn{background:#162018;border-color:#2e5040;color:#8dcca0}
+html.dark .p-mt-btn{background:#162018;border-color:#2e5040;color:#8dcca0}
 html.dark .p-mt-btn:hover{border-color:#4a7a5e;color:#eae8e2}
 html.dark .p-mt-btn.sel{background:#1e3028;border-color:#4a7a5e;color:#c8e8c0}
 .p-ocup-btn{background:#e4e7e0;border:1.5px solid #bec2b8;border-radius:6px;padding:5px 11px;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;color:#4a6a54;transition:all .15s}
@@ -264,49 +264,61 @@ html.dark .cal-ym-item{background:#141a12;border-color:#253025;color:#eae8e2}
 html.dark .cal-ym-item:hover{background:#1a201a;border-color:#2e5040}
 html.dark .cal-ym-item.sel{background:#162018;border-color:#2e5040;color:#a8c8a8}
 html.dark #btn-dark,html.dark #tb-config-panel{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
-/* ===== Mascota Copito: esquina inferior derecha de la página ===== */
+/* ===== Mascota Copahuito: esquina inferior derecha de la página ===== */
 #mascot{position:fixed;right:22px;bottom:12px;z-index:60;width:74px;height:74px;pointer-events:none;user-select:none}
 #mascot .mascot-avatar{position:absolute;right:0;bottom:0;width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#1e4030 0%,#2d6148 100%);border:3px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 6px 20px rgba(0,0,0,.32);animation:mascotBob 3.2s ease-in-out infinite;pointer-events:auto;cursor:pointer}
 #mascot .mascot-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:1}
-#mascot .mascot-face-base{animation:mascotSmileHide 2.4s ease-in-out infinite}
-#mascot .mascot-face-smile{font-size:31px;animation:mascotSmileShow 2.4s ease-in-out infinite}
-#mascot .mascot-hand{position:absolute;top:-6px;right:-10px;font-size:28px;transform-origin:70% 75%;animation:mascotWave 2.4s ease-in-out infinite}
-/* La burbuja nace del vértice superior izquierdo del círculo: se ancla ahí (right/bottom)
-   y no al costado, con transform-origin en ese mismo vértice para que "emerja" desde él. */
-#mascot .mascot-bubble{position:absolute;right:52px;bottom:52px;transform-origin:bottom right;background:#fff;color:#1e4030;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:700;line-height:1.4;padding:8px 13px;border-radius:15px;box-shadow:0 4px 16px rgba(0,0,0,.2);max-width:205px;width:max-content;opacity:0;filter:blur(0);transform:translate(6px,6px) scale(.96);animation:mascotIntro 5s ease-in-out forwards;transition:opacity .9s ease,transform .9s ease,filter .9s ease;pointer-events:none}
-#mascot .mascot-bubble::after{content:'';position:absolute;width:10px;height:10px;background:inherit;right:14px;bottom:-3px;transform:rotate(45deg);border-radius:2px}
-#mascot .mascot-avatar:hover ~ .mascot-bubble{opacity:1 !important;transform:translate(0,0) scale(1) !important;filter:blur(0) !important;animation:none !important}
+#mascot .mascot-face-base{animation:mascotSmileHide 12s ease-in-out infinite}
+#mascot .mascot-face-smile{font-size:31px;animation:mascotSmileShow 12s ease-in-out infinite}
+#mascot .mascot-hand{position:absolute;top:-6px;right:-10px;font-size:28px;transform-origin:70% 75%;opacity:0;animation:mascotWave 12s ease-in-out infinite}
 @keyframes mascotBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes mascotWave{0%,55%,100%{transform:rotate(0deg)}8%{transform:rotate(-16deg)}16%{transform:rotate(12deg)}24%{transform:rotate(-14deg)}32%{transform:rotate(10deg)}40%{transform:rotate(0deg)}}
-/* La sonrisa (con dientes) aparece en el mismo tramo del ciclo en que se mueve la mano */
-@keyframes mascotSmileShow{0%,55%,100%{opacity:0}8%,32%{opacity:1}40%{opacity:0}}
-@keyframes mascotSmileHide{0%,55%,100%{opacity:1}8%,32%{opacity:0}40%{opacity:1}}
-/* El desvanecido final (72%-100%) suma un desenfoque: al reaparecer por hover luego,
-   la burbuja parte de ese mismo estado difuminado y transiciona lento hasta nítida. */
-@keyframes mascotIntro{0%{opacity:0;filter:blur(0);transform:translate(6px,6px) scale(.96)}6%{opacity:1;filter:blur(0);transform:translate(0,0) scale(1)}72%{opacity:1;filter:blur(0);transform:translate(0,0) scale(1)}100%{opacity:0;filter:blur(5px);transform:translate(6px,6px) scale(.96)}}
-html.dark #mascot .mascot-bubble{background:#1a2e1e;color:#c8e8c0;box-shadow:0 4px 16px rgba(0,0,0,.55)}
+/* Copahuito tiene dos reacciones que se turnan en un ciclo de 12s: primero
+   sonríe (0%–33%), después saluda con la mano (33%–100%). Se probó una
+   tercera reacción de "tocar la campana" pero el gesto no se veía natural,
+   así que se sacó y quedan solo estas dos. */
+/* Reacción 1: sonreír (0%–33%) */
+@keyframes mascotSmileShow{0%,100%{opacity:0}6%,26%{opacity:1}32%{opacity:0}}
+@keyframes mascotSmileHide{0%,100%{opacity:1}6%,26%{opacity:0}32%{opacity:1}}
+/* Reacción 2: saludar con la mano (33%–100%), se queda arriba a la
+   derecha todo el gesto y después se desvanece. */
+@keyframes mascotWave{
+  0%,33%{opacity:0;transform:rotate(0deg)}
+  36%{opacity:1;transform:rotate(-16deg)}
+  40%{transform:rotate(12deg)}
+  44%{transform:rotate(-14deg)}
+  48%{transform:rotate(10deg)}
+  53%{transform:rotate(-12deg)}
+  58%{transform:rotate(8deg)}
+  63%{opacity:1;transform:rotate(0deg)}
+  72%,100%{opacity:0;transform:rotate(0deg)}
+}
 html.dark #mascot .mascot-avatar{border-color:rgba(255,255,255,.25)}
-/* ===== Chat de Copito: panel que se abre al hacer click en el avatar (no
-   en hover, porque un input de texto necesita que el mouse pueda salir de
-   la zona de hover sin que se cierre) para escribirle la consulta y que
-   arme la respuesta ahí mismo. ===== */
-#mascot .mascot-chat{position:absolute;right:0;bottom:100%;margin-bottom:14px;width:270px;max-width:calc(100vw - 40px);background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.28);pointer-events:none;opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:bottom right;transition:opacity .18s ease,transform .18s ease,visibility .18s;display:flex;flex-direction:column;overflow:hidden}
+/* ===== Chat de Copahuito: un único flotante con forma de globo de diálogo
+   (con "colita" apuntando al avatar, como el saludo de antes) que ahora
+   incluye el saludo arriba y, justo debajo, el cuadro para escribir la
+   consulta — ya no hay dos flotantes separados. Se abre con click (no con
+   hover) porque tiene un campo de texto que necesita poder recibir foco. ===== */
+#mascot .mascot-chat{position:absolute;right:0;bottom:100%;margin-bottom:14px;width:280px;max-width:calc(100vw - 40px);background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.28);pointer-events:none;opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:bottom right;transition:opacity .18s ease,transform .18s ease,visibility .18s;display:flex;flex-direction:column;overflow:visible}
+#mascot .mascot-chat::after{content:'';position:absolute;width:12px;height:12px;background:inherit;right:18px;bottom:-4px;transform:rotate(45deg);border-radius:2px;z-index:-1}
 #mascot .mascot-chat.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto}
-#mascot .mascot-chat-head{background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.03em;padding:9px 8px 9px 13px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-#mascot .mascot-chat-close{background:none;border:none;color:#fff;opacity:.75;font-size:13px;cursor:pointer;padding:3px 6px;line-height:1;border-radius:5px}
-#mascot .mascot-chat-close:hover{opacity:1;background:rgba(255,255,255,.15)}
-#mascot .mascot-chat-body{padding:10px 12px 2px;max-height:180px;overflow-y:auto}
-#mascot .mascot-chat-hint{font-family:'Outfit',sans-serif;font-size:11.5px;color:#5a6a5e;line-height:1.5;margin:0 0 6px}
-#nlq-feedback{font-family:'Outfit',sans-serif;font-size:10.5px;line-height:1.45;display:none}
+#mascot .mascot-chat-close{position:absolute;top:8px;right:10px;background:none;border:none;color:#8a9a8e;font-size:14px;cursor:pointer;padding:4px 6px;line-height:1;border-radius:5px}
+#mascot .mascot-chat-close:hover{color:#1e4030;background:rgba(30,64,48,.08)}
+#mascot .mascot-chat-greeting{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#1e4030;line-height:1.35;margin:0;padding:16px 30px 6px 16px}
+#mascot .mascot-chat-body{padding:2px 14px 2px;max-height:180px;overflow-y:auto}
+#mascot .mascot-chat-hint{font-family:'Outfit',sans-serif;font-size:13.5px;color:#5a6a5e;line-height:1.5;margin:0 0 8px}
+#nlq-feedback{font-family:'Outfit',sans-serif;font-size:13px;line-height:1.5;display:none}
 #nlq-feedback.ok{color:#2d6148}
 #nlq-feedback.err{color:#c0392b}
 #nlq-feedback.chat{color:#3d6b8a;font-weight:600}
-#mascot .mascot-chat-input-row{display:flex;align-items:flex-end;gap:6px;padding:8px 10px 10px;border-top:1px solid #e6ece7}
-#nlq-input{flex:1;resize:none;border:1.5px solid #b2d4bf;border-radius:8px;padding:6px 8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;color:#0f1e14;background:#f0f7f3;outline:none;transition:border-color .15s}
+#mascot .mascot-chat-input-row{display:flex;align-items:flex-end;gap:7px;padding:9px 12px 12px;border-top:1px solid #e6ece7}
+#nlq-input{flex:1;resize:none;border:1.5px solid #b2d4bf;border-radius:9px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:#0f1e14;background:#f0f7f3;outline:none;transition:border-color .15s}
 #nlq-input:focus{border-color:#1e4030}
-#nlq-btn{flex-shrink:0;background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);color:#fff;border:none;border-radius:8px;padding:0 13px;height:32px;font-size:15px;cursor:pointer;transition:box-shadow .2s}
+#nlq-btn{flex-shrink:0;background:linear-gradient(135deg,#0c1e14 0%,#1a3828 45%,#2d6148 100%);color:#fff;border:none;border-radius:9px;padding:0 14px;height:36px;font-size:17px;cursor:pointer;transition:box-shadow .2s}
 #nlq-btn:hover{box-shadow:0 4px 14px rgba(30,64,48,.4)}
 html.dark #mascot .mascot-chat{background:#152a1a;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+html.dark #mascot .mascot-chat-greeting{color:#c8e8c0}
+html.dark #mascot .mascot-chat-close{color:#7a9a84}
+html.dark #mascot .mascot-chat-close:hover{color:#eae8e2;background:rgba(255,255,255,.1)}
 html.dark #mascot .mascot-chat-hint{color:#9db8a4}
 html.dark #mascot .mascot-chat-input-row{border-top-color:#1a2e1e}
 html.dark #nlq-input{background:#0d1f14;border-color:#2e5040;color:#eae8e2}
@@ -314,7 +326,7 @@ html.dark #nlq-input:focus{border-color:#4a7a5e}
 html.dark #nlq-feedback.ok{color:#8dcca0}
 html.dark #nlq-feedback.err{color:#ff6b5f}
 html.dark #nlq-feedback.chat{color:#7fb3d5}
-@media (max-width:640px){#mascot{right:10px;bottom:8px;width:58px;height:58px}#mascot .mascot-avatar{width:58px;height:58px;font-size:28px}#mascot .mascot-face-smile{font-size:24px}#mascot .mascot-hand{font-size:22px}#mascot .mascot-bubble{right:42px;bottom:42px;max-width:150px;font-size:11.5px;padding:7px 11px}#mascot .mascot-chat{width:238px}}
+@media (max-width:640px){#mascot{right:10px;bottom:8px;width:58px;height:58px}#mascot .mascot-avatar{width:58px;height:58px;font-size:28px}#mascot .mascot-face-smile{font-size:24px}#mascot .mascot-hand{font-size:22px}#mascot .mascot-chat{width:238px}#mascot .mascot-chat-greeting{font-size:14px;padding:14px 26px 5px 14px}#mascot .mascot-chat-hint{font-size:12px}#mascot .mascot-chat-close{top:6px;right:8px}}
 </style>
 </head>
 <!-- Firebase -->
@@ -385,7 +397,7 @@ html.dark #nlq-feedback.chat{color:#7fb3d5}
             <div style="display:flex;gap:5px">
               <button class="p-ocup-btn" data-ocup="SINGLE"    onclick="toggleOcupBtn(this)">1</button>
               <button class="p-ocup-btn" id="p-btn-doble" data-ocup="DOBLE" onclick="toggleOcupBtn(this);toggleMTbtns()">2</button>
-              <button class="p-ocup-btn" data-ocup="TRIPLE"    onclick="toggleOcupBtn(this)">3</button>
+              <button class="p-ocup-btn" id="p-btn-triple" data-ocup="TRIPLE" onclick="toggleOcupBtn(this);toggleTriBtns()">3</button>
               <button class="p-ocup-btn" data-ocup="CUADRUPLE" onclick="toggleOcupBtn(this)">4</button>
               <button class="p-ocup-btn" data-ocup="QUINTUPLE" onclick="toggleOcupBtn(this)">5</button>
             </div>
@@ -393,6 +405,11 @@ html.dark #nlq-feedback.chat{color:#7fb3d5}
               <span style="font-size:10px;color:#6b7a6e;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Tipo doble:</span>
               <button class="p-mt-btn" id="p2-btn-m" onclick="toggleMT('m')" title="Doble Matrimonial">Matrimonial</button>
               <button class="p-mt-btn" id="p2-btn-t" onclick="toggleMT('t')" title="Doble Twin">Twin</button>
+            </div>
+            <div id="p-triple-btns" style="display:none;gap:6px;align-items:center">
+              <span style="font-size:10px;color:#6b7a6e;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Tipo triple:</span>
+              <button class="p-mt-btn sel" id="p3-btn-n" onclick="setTripleTipo('p','n')" title="Triple normal (1 matrimonial + 1 individual)">Normal</button>
+              <button class="p-mt-btn" id="p3-btn-t" onclick="setTripleTipo('p','t')" title="Triple Twin (camas separadas)">Twin</button>
             </div>
           </div>
         </div>
@@ -448,7 +465,7 @@ html.dark #nlq-feedback.chat{color:#7fb3d5}
       <div>
         <span class="lbl">Personas</span>
 <div style="display:flex;gap:6px;align-items:center">
-          <select class="inp" id="d-ocup" onchange="poblarCatsDisp();toggleDobleBtns('d')" style="flex:1">
+          <select class="inp" id="d-ocup" onchange="poblarCatsDisp();toggleDobleBtns('d');toggleTripleBtnsDisp('d')" style="flex:1">
             <option value="">— Elegir —</option>
             <option value="SINGLE">1 (Single)</option>
             <option value="DOBLE">2 (Doble)</option>
@@ -459,6 +476,10 @@ html.dark #nlq-feedback.chat{color:#7fb3d5}
           <div id="d-doble-btns" style="display:none;gap:4px;flex-shrink:0">
             <button class="doble-btn active" id="d-btn-m" onclick="setDobleTipo('d','m')" title="Doble Matrimonial">M</button>
             <button class="doble-btn" id="d-btn-t" onclick="setDobleTipo('d','t')" title="Doble Twin">T</button>
+          </div>
+          <div id="d-triple-btns" style="display:none;gap:4px;flex-shrink:0">
+            <button class="doble-btn active" id="d3-btn-n" onclick="setTripleTipo('d','n')" title="Triple normal (1 matrimonial + 1 individual)">N</button>
+            <button class="doble-btn" id="d3-btn-t" onclick="setTripleTipo('d','t')" title="Triple Twin (camas separadas)">T</button>
           </div>
         </div>
       </div>
@@ -684,23 +705,20 @@ html.dark #nlq-feedback.chat{color:#7fb3d5}
   </div>
 </div>
 <div id="mascot">
-  <div class="mascot-avatar" onclick="toggleMascotChat()" role="button" tabindex="0" aria-label="Escribirle a Copito" aria-haspopup="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleMascotChat();}">
+  <div class="mascot-avatar" onclick="toggleMascotChatPin()" onmouseenter="mascotHoverShow()" onmouseleave="mascotHoverHideMaybe()" role="button" tabindex="0" aria-label="Escribirle a Copahuito" aria-haspopup="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleMascotChatPin();}">
     <span class="mascot-face mascot-face-base">🙂</span>
     <span class="mascot-face mascot-face-smile">😁</span>
     <span class="mascot-hand">👋</span>
   </div>
-  <div class="mascot-bubble" aria-hidden="true">¡Hola! Soy Copito, tocame para escribirme una consulta 🫶</div>
-  <div class="mascot-chat" id="mascot-chat">
-    <div class="mascot-chat-head">
-      <span>✨ Copito responde</span>
-      <button type="button" class="mascot-chat-close" onclick="toggleMascotChat(false)" aria-label="Cerrar chat">✕</button>
-    </div>
+  <div class="mascot-chat" id="mascot-chat" onmouseenter="mascotHoverShow()" onmouseleave="mascotHoverHideMaybe()">
+    <button type="button" class="mascot-chat-close" onclick="closeMascotChatFully()" aria-label="Cerrar chat">✕</button>
+    <p class="mascot-chat-greeting">¡Hola! Soy Copahuito ¿en qué te puedo ayudar hoy?</p>
     <div class="mascot-chat-body">
-      <p class="mascot-chat-hint">Contame qué necesitás y te armo la respuesta. Ej: "precios doble 3, 4 y 5 de octubre en todas las categorías"</p>
+      <p class="mascot-chat-hint">Ej: "precios doble 3, 4 y 5 de octubre en todas las categorías"</p>
       <div id="nlq-feedback"></div>
     </div>
     <div class="mascot-chat-input-row">
-      <textarea id="nlq-input" rows="1" placeholder="Escribí tu consulta…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();procesarConsultaNatural();}else if(event.key==='Escape'){toggleMascotChat(false);}"></textarea>
+      <textarea id="nlq-input" rows="1" placeholder="Escribí tu consulta…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();procesarConsultaNatural();}else if(event.key==='Escape'){closeMascotChatFully();}"></textarea>
       <button id="nlq-btn" onclick="procesarConsultaNatural()" aria-label="Generar respuesta">➤</button>
     </div>
   </div>
@@ -783,9 +801,9 @@ function parseYmKey(k) {
 }
 function ymLabel(k) { var p = parseYmKey(k); return p ? p.label : (k||''); }
 function meLabel(key,anio){ return (MESES_ES[key]||ME[key]||key)+' '+(anio||$('p-anio')&&$('p-anio').value||''); }
-var OE = {SINGLE:"1 persona",DOBLE:"2 personas (Doble Matrimonial)",DOBLE_TWIN:"2 personas (Doble Twin)",TRIPLE:"3 personas",CUADRUPLE:"4 personas",QUINTUPLE:"5 personas"};
-var OE_EN = {SINGLE:"1 guest",DOBLE:"2 guests (Double)",DOBLE_TWIN:"2 guests (Twin)",TRIPLE:"3 guests",CUADRUPLE:"4 guests",QUINTUPLE:"5 guests"};
-var OE_PT = {SINGLE:"1 hóspede",DOBLE:"2 hóspedes (Duplo)",DOBLE_TWIN:"2 hóspedes (Twin)",TRIPLE:"3 hóspedes",CUADRUPLE:"4 hóspedes",QUINTUPLE:"5 hóspedes"};
+var OE = {SINGLE:"1 persona",DOBLE:"2 personas (Doble Matrimonial)",DOBLE_TWIN:"2 personas (Doble Twin)",TRIPLE:"3 personas",TRIPLE_TWIN:"3 personas (Triple Twin)",CUADRUPLE:"4 personas",QUINTUPLE:"5 personas"};
+var OE_EN = {SINGLE:"1 guest",DOBLE:"2 guests (Double)",DOBLE_TWIN:"2 guests (Twin)",TRIPLE:"3 guests",TRIPLE_TWIN:"3 guests (Twin)",CUADRUPLE:"4 guests",QUINTUPLE:"5 guests"};
+var OE_PT = {SINGLE:"1 hóspede",DOBLE:"2 hóspedes (Duplo)",DOBLE_TWIN:"2 hóspedes (Twin)",TRIPLE:"3 hóspedes",TRIPLE_TWIN:"3 hóspedes (Twin)",CUADRUPLE:"4 hóspedes",QUINTUPLE:"5 hóspedes"};
 var CAMAS = {
   SINGLE: {
     "Suite":          "Sommier Queen",
@@ -811,6 +829,11 @@ var CAMAS = {
     "Suite Familiar": "2 Sommier Matrimoniales con balcón",
     "Standard":       "1 Sommier Matrimonial + 1 Individual",
     "Economica":      "1 Sommier Matrimonial + 1 Individual"
+  },
+  TRIPLE_TWIN: {
+    "Suite Familiar": "1 Sommier Matrimonial + 2 Individuales con balcón",
+    "Standard":       "3 Sommier Individuales",
+    "Economica":      "3 Sommier Individuales"
   },
   CUADRUPLE: {
     "Departamento":   "2 hab. intercomunicadas: 1 Sommier Matrimonial + 2 Individuales, c/u con baño y tv",
@@ -861,6 +884,7 @@ function saveFormSnapshot() {
     snap.checkboxes[key] = el.checked;
   });
   snap.dobleTipo = { p: _dobleTipo.p, d: _dobleTipo.d };
+  snap.tripleTipo = { p: _tripleTipo.p, d: _tripleTipo.d };
   _formSnapshot = snap;
 }
 function restoreAndRegen() {
@@ -883,6 +907,19 @@ function restoreAndRegen() {
     if ($('d-btn-m')) {
       $('d-btn-m').className = 'doble-btn' + (_dobleTipo.d==='m' ? ' active' : '');
       $('d-btn-t').className = 'doble-btn' + (_dobleTipo.d==='t' ? ' active' : '');
+    }
+  }
+  if (snap.tripleTipo) {
+    _tripleTipo.p = snap.tripleTipo.p;
+    _tripleTipo.d = snap.tripleTipo.d;
+    toggleTripleBtnsDisp('d');
+    if ($('p3-btn-n')) {
+      $('p3-btn-n').className = 'p-mt-btn' + (_tripleTipo.p==='n' ? ' sel' : '');
+      $('p3-btn-t').className = 'p-mt-btn' + (_tripleTipo.p==='t' ? ' sel' : '');
+    }
+    if ($('d3-btn-n')) {
+      $('d3-btn-n').className = 'doble-btn' + (_tripleTipo.d==='n' ? ' active' : '');
+      $('d3-btn-t').className = 'doble-btn' + (_tripleTipo.d==='t' ? ' active' : '');
     }
   }
   var sec = snap.sec;
@@ -1030,6 +1067,7 @@ var TR = {
       SINGLE:    {"Suite":"Queen bed","Standard":"Double bed","Standard Mini":"Double bed","Economica":"Double bed","Suite Familiar":"Double bed with balcony"},
       DOBLE:     {"Suite":"Queen bed","Standard":"Double bed","Standard Mini":"Double bed","Economica":"Double bed","Suite Familiar":"Double bed with balcony"},
       TRIPLE:    {"Suite Familiar":"2 Double beds with balcony","Standard":"1 Double bed + 1 Single bed","Economica":"1 Double bed + 1 Single bed"},
+      TRIPLE_TWIN:{"Suite Familiar":"1 Double bed + 2 Single beds with balcony","Standard":"3 Single beds","Economica":"3 Single beds"},
       CUADRUPLE: {"Departamento":"2 interconnected rooms: 1 Double bed + 2 Single beds each, private bathroom and TV","Suite Familiar":"1 Double bed + 2 Single beds with balcony","Standard":"2 Double beds"},
       QUINTUPLE: {"Departamento":"2 interconnected rooms: 1 Double bed + 3 Single beds each, private bathroom and TV","Suite Familiar":"2 Double beds + 1 Single bed"}
     },
@@ -1104,6 +1142,7 @@ var TR = {
       SINGLE:    {"Suite":"Sommier Queen","Standard":"Sommier de Casal","Standard Mini":"Sommier de Casal","Economica":"Sommier de Casal","Suite Familiar":"Sommier de Casal com varanda"},
       DOBLE:     {"Suite":"Sommier Queen","Standard":"Sommier de Casal","Standard Mini":"Sommier de Casal","Economica":"Sommier de Casal","Suite Familiar":"Sommier de Casal com varanda"},
       TRIPLE:    {"Suite Familiar":"2 Sommiers de Casal com varanda","Standard":"1 Sommier de Casal + 1 Individual","Economica":"1 Sommier de Casal + 1 Individual"},
+      TRIPLE_TWIN:{"Suite Familiar":"1 Sommier de Casal + 2 Individuais com varanda","Standard":"3 Sommiers Individuais","Economica":"3 Sommiers Individuais"},
       CUADRUPLE: {"Departamento":"2 quartos intercomunicados: 1 Sommier de Casal + 2 Individuais, cada um com banheiro e tv","Suite Familiar":"1 Sommier de Casal + 2 Individuais com varanda","Standard":"2 Sommiers de Casal"},
       QUINTUPLE: {"Departamento":"2 quartos intercomunicados: 1 Sommier de Casal + 3 Individuais, cada um com banheiro e tv","Suite Familiar":"2 Sommiers de Casal + 1 Individual"}
     },
@@ -1375,8 +1414,10 @@ function onMes() {
 }
 var _dobleTipo = { p: 'm', d: 'm' };
 function toggleDobleBtns(prefix) {
-  var ocup = val(prefix+'-ocup');
+  var ocupEl = $(prefix+'-ocup');
+  var ocup = ocupEl ? ocupEl.value : null;
   var btns = $(prefix+'-doble-btns');
+  if (!btns) return;
   if (ocup === 'DOBLE') {
     btns.style.display = 'flex';
   } else {
@@ -1390,6 +1431,69 @@ function setDobleTipo(prefix, tipo) {
   $(prefix+'-btn-t').className = 'doble-btn' + (tipo==='t'?' active':'');
   if (prefix==='p') { poblarCatsPrecios(); actuCard(); }
   else { poblarCatsDisp(); }
+}
+// ============================================================
+// TRIPLE: igual que Doble Matrimonial/Twin pero sin ser una ocupación de
+// precio aparte (la Suite Familiar, Standard y Económica de Triple tienen
+// la MISMA tarifa con camas separadas o no) — este flag solo cambia qué
+// descripción de camas se muestra en la respuesta generada.
+// ============================================================
+var _tripleTipo = { p: 'n', d: 'n' };
+function toggleTriBtns() {
+  var btn = $('p-btn-triple');
+  var active = btn && btn.classList.contains('sel');
+  var div = $('p-triple-btns');
+  if (!div) return;
+  if (active) {
+    div.style.display = 'flex';
+    if (_tripleTipo.p !== 't') _tripleTipo.p = 'n';
+  } else {
+    div.style.display = 'none';
+    _tripleTipo.p = 'n';
+  }
+  if ($('p3-btn-n')) $('p3-btn-n').className = 'p-mt-btn' + (_tripleTipo.p==='n'?' sel':'');
+  if ($('p3-btn-t')) $('p3-btn-t').className = 'p-mt-btn' + (_tripleTipo.p==='t'?' sel':'');
+  poblarCatsPrecios(); actuCard();
+}
+function toggleTripleBtnsDisp(prefix) {
+  var ocupEl = $(prefix+'-ocup');
+  var ocup = ocupEl ? ocupEl.value : null;
+  var btns = $(prefix+'-triple-btns');
+  if (!btns) return;
+  if (ocup === 'TRIPLE') {
+    btns.style.display = 'flex';
+    if (_tripleTipo[prefix] !== 't') _tripleTipo[prefix] = 'n';
+  } else {
+    btns.style.display = 'none';
+    _tripleTipo[prefix] = 'n';
+  }
+  if ($(prefix+'3-btn-n')) $(prefix+'3-btn-n').className = 'doble-btn' + (_tripleTipo[prefix]==='n'?' active':'');
+  if ($(prefix+'3-btn-t')) $(prefix+'3-btn-t').className = 'doble-btn' + (_tripleTipo[prefix]==='t'?' active':'');
+}
+function setTripleTipo(prefix, tipo) {
+  _tripleTipo[prefix] = tipo;
+  if (prefix === 'p') {
+    if ($('p3-btn-n')) $('p3-btn-n').className = 'p-mt-btn' + (tipo==='n'?' sel':'');
+    if ($('p3-btn-t')) $('p3-btn-t').className = 'p-mt-btn' + (tipo==='t'?' sel':'');
+    poblarCatsPrecios(); actuCard();
+  } else {
+    if ($('d3-btn-n')) $('d3-btn-n').className = 'doble-btn' + (tipo==='n'?' active':'');
+    if ($('d3-btn-t')) $('d3-btn-t').className = 'doble-btn' + (tipo==='t'?' active':'');
+    poblarCatsDisp();
+  }
+}
+// Devuelve la clave a usar para buscar la descripción de camas (getCamas):
+// para Triple Twin usa la variante "TRIPLE_TWIN" aunque el precio siga
+// buscándose siempre con la ocupación real "TRIPLE".
+function camasOcupPara(ocup, prefix) {
+  if (ocup === 'TRIPLE' && _tripleTipo[prefix] === 't') return 'TRIPLE_TWIN';
+  return ocup;
+}
+// Devuelve la etiqueta de ocupación a mostrar en el texto (con "Twin" si
+// corresponde), sin afectar la ocupación real usada para precios.
+function ocupLabelPara(ocup, prefix) {
+  if (ocup === 'TRIPLE' && _tripleTipo[prefix] === 't') return OE['TRIPLE_TWIN'] || (OE[ocup]+' (Twin)');
+  return OE[ocup] || ocup;
 }
 var _p2Sel = {m:false, t:false};
 function toggleMTbtns() {
@@ -1560,6 +1664,7 @@ function genPreciosMesCompleto(m) {
     { label:"2 personas (Doble Mat.)",   o:"DOBLE",     cats:["Suite","Suite Familiar","Standard","Standard Mini","Economica"] },
     { label:"2 personas (Doble Twin)",   o:"DOBLE_TWIN",cats:["Suite","Standard","Standard Mini","Economica"] },
     { label:"3 personas (Triple)",       o:"TRIPLE",    cats:["Suite Familiar","Standard","Economica"] },
+    { label:"3 personas (Triple Twin)",  o:"TRIPLE",    camasKey:"TRIPLE_TWIN", cats:["Suite Familiar","Standard","Economica"] },
     { label:"4 personas (Cuádruple)",    o:"CUADRUPLE", cats:["Suite Familiar","Departamento","Standard"] },
     { label:"5 personas (Quíntuple)",    o:"QUINTUPLE", cats:["Suite Familiar","Departamento"] }
   ];
@@ -1580,7 +1685,7 @@ function genPreciosMesCompleto(m) {
       if (especialChecked('p')) pn = redondearEspecial(pn * getEspecialMult('p'));
       var notaFinde = (g.o==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? " _"+t("findeBaseDoble")+"_" : "";
-      txt += "   🏨 *"+clT(c)+"*"+getCamas(g.o,c)+": *"+pesos(pn)+"*"+notaFinde+"\n";
+      txt += "   🏨 *"+clT(c)+"*"+getCamas(g.camasKey||g.o,c)+": *"+pesos(pn)+"*"+notaFinde+"\n";
     });
   });
   txt += "\n\n"+t("iva")+"\n";
@@ -1615,6 +1720,8 @@ function genPrecios() {
   if (!m){ mostrar("⚠️ Seleccioná el mes.","err"); return; }
   if (ocupList.length===0 || cats.length===0) { genPreciosMesCompleto(m); return; }
   var o = ocupList[0];
+  var camasOcup = camasOcupPara(o, 'p');
+  var ocupLabel = ocupLabelPara(o, 'p');
   var isFinde = $("p-finde") && $("p-finde").checked;
   var nt = n===1?"1 noche":n+" noches";
   var txt = hola("p-nom") + "\n\n";
@@ -1626,22 +1733,22 @@ function genPrecios() {
     var notaFinde = (isFinde && o==="SINGLE" && (c==="Suite"||c==="Suite Familiar")) ? " _(tarifa base doble aplicada, Vie a Dom no rige precio single)_" : "";
     var notaFindeExtra = (o==="SINGLE" && (c==="Suite"||c==="Suite Familiar")) ? "\n_"+t('findeBaseDoble')+"_" : "";
     var nochesLabel = n===1 ? "1 noche" : n+" noches";
-    txt += tFn('preciosVigentes')(nochesLabel, meLabel(m,anio), OE[o])+notaFinde+"\n\n";
-    txt += "🏨 *"+clT(c)+"*"+getCamas(o,c)+"\n";
+    txt += tFn('preciosVigentes')(nochesLabel, meLabel(m,anio), ocupLabel)+notaFinde+"\n\n";
+    txt += "🏨 *"+clT(c)+"*"+getCamas(camasOcup,c)+"\n";
     txt += t('precioPorNoche')+": *"+pesos(pn)+"*"+notaFindeExtra;
     if (n>1) {
       txt += "\n"+t('total')+" ("+n+" noches): *"+pesos(tot)+"*";
     }
   } else {
     var nochesLabelM = n===1 ? "1 noche" : n+" noches";
-    txt += tFn('preciosVigentes')(nochesLabelM, meLabel(m,anio), OE[o])+"\n\n";
+    txt += tFn('preciosVigentes')(nochesLabelM, meLabel(m,anio), ocupLabel)+"\n\n";
     cats.forEach(function(c){
       var pn = getPrecioEfectivo(mFull, o, c);
       if (!pn) return;
       var tot = pn*n;
       var notaFindeM = (o==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? "\n   _"+t('findeBaseDoble')+"_" : "";
-      txt += "🏨 *"+clT(c)+"*"+getCamas(o,c)+"\n";
+      txt += "🏨 *"+clT(c)+"*"+getCamas(camasOcup,c)+"\n";
       txt += "   "+t('precioPorNoche')+": *"+pesos(pn)+"*"+notaFindeM;
       if (n>1) {
         txt += "\n   "+t('total')+" ("+n+" noches): *"+pesos(tot)+"*";
@@ -2111,6 +2218,8 @@ function genDisp() {
   var refOut = getMesRef(mesOutKey, ocup);
   var multiMes = (mesInKey !== mesOutKey) && P[mesInKey] && P[mesInKey][ocup] && P[mesOutKey] && P[mesOutKey][ocup];
   var esOrientativo = refIn.orientativo;
+  var camasOcup = camasOcupPara(ocup, 'd');
+  var ocupLabel = ocupLabelPara(ocup, 'd');
   var cats=[];
   for (var i=0;i<chks.length;i++) cats.push(chks[i].value);
   var ORDER = ["Suite","Suite Familiar","Departamento","Standard","Standard Mini","Economica"];
@@ -2119,7 +2228,7 @@ function genDisp() {
     if(ia===-1) ia=99; if(ib===-1) ib=99;
     return ia - ib;
   });
-  var encabezado = tFn('dispIntro')(nochesT,fechaInStr,fechaOutStr,nochesN,OE[ocup]);
+  var encabezado = tFn('dispIntro')(nochesT,fechaInStr,fechaOutStr,nochesN,ocupLabel);
   if (esOrientativo) encabezado += " _(precios orientativos — tarifas definitivas a confirmar)_";
   encabezado += "\n"+t('opcionesDisp')+"\n\n";
   var txt=hola("d-nom")+"\n\n"+encabezado;
@@ -2147,7 +2256,7 @@ function genDisp() {
     };
     var pnIn  = getPn(refIn.mes);
     var pnOut = multiMes ? getPn(refOut.mes) : pnIn;
-    txt+="🏨 *"+clT(c)+"*"+getCamas(ocup,c)+"\n";
+    txt+="🏨 *"+clT(c)+"*"+getCamas(camasOcup,c)+"\n";
     if (pnIn) {
       var notaFindeTxt = (ocup==="SINGLE" && (c==="Suite"||c==="Suite Familiar"))
         ? " _("+t('findeBaseDoble')+")_" : "";
@@ -2881,6 +2990,18 @@ function limpiarForm() {
   if($("p-doble-btns")) $("p-doble-btns").style.display="none";
   _dobleTipo.p = 'm';
   if($("p-btn-m")){ $("p-btn-m").className="doble-btn active"; $("p-btn-t").className="doble-btn"; }
+  document.querySelectorAll('.p-ocup-btn.sel').forEach(function(b){ b.classList.remove('sel'); });
+  _p2Sel.m=false; _p2Sel.t=false;
+  if($("p-mt-btns")) $("p-mt-btns").style.display="none";
+  if($("p2-btn-m")) $("p2-btn-m").className="p-mt-btn";
+  if($("p2-btn-t")) $("p2-btn-t").className="p-mt-btn";
+  _tripleTipo.p = 'n'; _tripleTipo.d = 'n';
+  if($("p-triple-btns")) $("p-triple-btns").style.display="none";
+  if($("p3-btn-n")) $("p3-btn-n").className="p-mt-btn sel";
+  if($("p3-btn-t")) $("p3-btn-t").className="p-mt-btn";
+  if($("d-triple-btns")) $("d-triple-btns").style.display="none";
+  if($("d3-btn-n")) $("d3-btn-n").className="doble-btn active";
+  if($("d3-btn-t")) $("d3-btn-t").className="doble-btn";
   if($("ci-late-chk"))$("ci-late-chk").checked=false;
   $("ci-late-info").style.display="none";
   $("p-card").style.display="none";
@@ -2922,7 +3043,7 @@ function abrirCarpeta() {
   link.click();
 }
 // ============================================================
-// CONSULTA EN LENGUAJE NATURAL ("Copito responde")
+// CONSULTA EN LENGUAJE NATURAL ("Copahuito responde")
 // Interpreta un pedido en texto libre (ej: "necesito precios para una
 // doble el 3, 4 y 5 de octubre en todas las categorías"), detecta a qué
 // sección corresponde, completa el formulario de esa sección igual que si
@@ -3109,6 +3230,9 @@ function nlqPrecios(t) {
   _p2Sel.m=false; _p2Sel.t=false;
   $('p-mt-btns').style.display='none';
   $('p2-btn-m').className='p-mt-btn'; $('p2-btn-t').className='p-mt-btn';
+  _tripleTipo.p='n';
+  $('p-triple-btns').style.display='none';
+  $('p3-btn-n').className='p-mt-btn sel'; $('p3-btn-t').className='p-mt-btn';
   $('p-anio').value = String(anio);
   poblarMesesPrecios();
   var opt = $('p-mes').querySelector('option[value="'+mesKey+'"]');
@@ -3125,6 +3249,9 @@ function nlqPrecios(t) {
       if (ocup==='DOBLE') {
         toggleMTbtns();
         if (nlqDobleSubtipo(t)==='t') { toggleMT('m'); toggleMT('t'); }
+      } else if (ocup==='TRIPLE') {
+        toggleTriBtns();
+        if (nlqDobleSubtipo(t)==='t') { setTripleTipo('p','t'); }
       }
     }
   }
@@ -3138,7 +3265,7 @@ function nlqPrecios(t) {
     var nn = fechaInfo.esRango ? Math.max(1, fechaInfo.dias[1]-fechaInfo.dias[0]) : fechaInfo.dias.length;
     $('p-noches').value = nn;
   }
-  var resumenOcup = ocup ? (OE[ocup]||ocup) : 'sin especificar (se muestran todas las tarifas del mes)';
+  var resumenOcup = ocup ? ocupLabelPara(ocup,'p') : 'sin especificar (se muestran todas las tarifas del mes)';
   var resumenCats = cats.length>0 ? cats.map(cl).join(', ') : 'todas las categorías';
   var resumen = 'Precios · '+(MESES_ES[mesKey]||mesKey)+' '+anio+' · '+resumenOcup+' · '+$('p-noches').value+' noche(s) · '+resumenCats+'.';
   genPrecios();
@@ -3178,8 +3305,11 @@ function nlqDisponibilidad(t) {
   validarFechasDisp();
   $('d-ocup').value = ocup;
   toggleDobleBtns('d');
+  toggleTripleBtnsDisp('d');
   if (ocup==='DOBLE') {
     setDobleTipo('d', nlqDobleSubtipo(t)==='t' ? 't' : 'm');
+  } else if (ocup==='TRIPLE') {
+    setTripleTipo('d', nlqDobleSubtipo(t)==='t' ? 't' : 'n');
   } else {
     poblarCatsDisp();
   }
@@ -3189,7 +3319,7 @@ function nlqDisponibilidad(t) {
     selTodasDisp();
   }
   var resumenCats = cats.length>0 ? cats.map(cl).join(', ') : 'todas las categorías';
-  var resumen = 'Disponibilidad · '+(OE[ocup]||ocup)+' · '+fechaAStr(dIn)+' al '+fechaAStr(dOut)+' · '+resumenCats+'.';
+  var resumen = 'Disponibilidad · '+ocupLabelPara(ocup,'d')+' · '+fechaAStr(dIn)+' al '+fechaAStr(dOut)+' · '+resumenCats+'.';
   genDisp();
   if (nlqHuboError()) {
     nlqFeedback('⚠️ '+($('msg-out').textContent||'No se pudo generar la respuesta.'), 'err');
@@ -3221,7 +3351,7 @@ function nlqNoDisponibilidad(t) {
   }
 }
 // Charla fuera de tema (saludos, "¿cómo estás?", "¿de dónde sos?", clima,
-// "¿quién sos?", agradecimientos, etc.): Copito responde algo — aunque no
+// "¿quién sos?", agradecimientos, etc.): Copahuito responde algo — aunque no
 // sea información real — para que se sienta más como hablarle a una
 // persona que a un robot que solo tira errores. Se elige entre varias
 // variantes para que no suene siempre igual.
@@ -3240,20 +3370,102 @@ var NLQ_CHARLA = {
     'Ni idea del clima de hoy, soy más de tarifas que de meteorología 😅 ¿Te ayudo con algo del hotel?'
   ],
   identidad: [
-    'Soy Copito 🐣, el asistente del Hotel Copahue. Estoy para ayudarte a armar respuestas rápido.',
-    'Copito, para servirte. Mi especialidad es armar respuestas de precios y disponibilidad en segundos.'
+    'Soy Copahuito 🐣, el asistente del Hotel Copahue. Estoy para ayudarte a armar respuestas rápido.',
+    'Copahuito, para servirte. Mi especialidad es armar respuestas de precios y disponibilidad en segundos.'
   ],
   gracias: [
     '¡De nada! Para eso estoy 🙌',
     '¡Un placer! Cualquier cosa, acá ando.'
+  ],
+  despedida: [
+    '¡Nos vemos! Volvé a escribirme cuando necesites algo 👋',
+    '¡Chau! Quedo por acá para lo que haga falta.',
+    '¡Hasta la próxima! Fue un gusto ayudarte 🙌'
+  ],
+  chiste: [
+    '¿Por qué la Suite nunca se aburre? ¡Porque siempre tiene vista! 😄 ¿Te ayudo con algo más?',
+    'De chistes ando un poco flojo, pero de tarifas soy un capo 😅 ¿Necesitás algún precio?',
+    '¿Sabés cuál es la habitación más alegre? ¡La Doble, porque nunca está sola! 🛏️😄'
+  ],
+  edad: [
+    'Edad no tengo, pero energía para ayudarte de sobra 🙌',
+    'Soy joven todavía, recién arranqué a ayudar en la recepción 😄'
+  ],
+  gustos: [
+    'Me gusta ayudar a armar la estadía perfecta para cada huésped, ¡es lo mío! 🏨',
+    'Mi hobby favorito es dejar tarifas y respuestas listas en segundos 😄'
+  ],
+  cumplido: [
+    '¡Gracias, qué lindo! 🥰 Contame en qué más te puedo ayudar.',
+    '¡Uy, me hacés sonrojar! 😊 Decime si necesitás algo más.'
+  ],
+  risa: [
+    '😄 ¡Me alegra sacarte una sonrisa! ¿Te ayudo con algo del hotel?',
+    '¡Así me gusta! ¿Necesitás alguna respuesta armada?'
+  ],
+  hora: [
+    'No tengo reloj a mano, ¡ando siempre pendiente de las tarifas! ⏰ ¿Te ayudo con algo?',
+    'Ni idea de la hora exacta, pero para ayudarte siempre es buen momento 😄'
+  ],
+  afirmacion: [
+    '¡Buenísimo! Cualquier cosa que necesites, contame.',
+    '¡Genial! Quedo atento por si necesitás algo más.'
+  ],
+  presente: [
+    '¡Acá ando, atento! ¿En qué te doy una mano?',
+    '¡Presente! Decime nomás qué necesitás.'
+  ],
+  animo: [
+    'Uh, turno pesado eh 😅 Ya casi, dale para adelante que se pasa rápido.',
+    'Se banca, se banca 💪 Cualquier cosa que te pueda facilitar, contame.',
+    'Ánimo con el turno 🙌 Si querés que te arme algo mientras tanto, decime.'
+  ],
+  mate: [
+    'Mate no tomo (no tengo cómo 😄) pero te acompaño en la previa. ¿Todo bien por ahí?',
+    '¡Ojalá pudiera cebar uno! Contame cómo va el turno.'
+  ],
+  comida: [
+    'Si tuviera boca, me tiraría por unas empanadas 😄 ¿Vos qué se te antoja?',
+    'No como, pero me imagino que algo rico no vendría mal ahora, ¿no? 😄'
+  ],
+  charla_general: [
+    'Dale, contame algo. ¿Cómo viene el turno hasta ahora?',
+    '¡Hablemos! Aunque mi fuerte son las tarifas, también puedo hacerte compañía un rato 😄',
+    '¿Qué tal? Contame cómo anda todo por recepción.'
   ]
 };
 function _nlqPick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+// Mensaje cuando no se entendió la consulta: variantes más informales y
+// amigables (en vez de sonar como un error de sistema), invitando a
+// reformular en lugar de sonar robótico.
+var NLQ_NO_ENTENDI = [
+  'Uy, no te entendí bien 😅 Probá con otra pregunta, tipo "doble para el 10 y 11 de octubre".',
+  'Mmm, esa no me cerró 🤔 ¿Me la decís de otra forma? Por ejemplo "disponibilidad para el finde".',
+  'No te caché esa vez 😅 Probá reformulando, o preguntame por precios, disponibilidad, servicios, check-in o cancelación.',
+  'Esa me la perdí 🙈 Intentá de nuevo, por ejemplo "precios triple para el 5 de octubre".'
+];
+// Repertorio de charla fuera de tema: se revisa SOLO cuando ninguna sección
+// real (precios, disponibilidad, servicios, etc.) coincidió con el
+// mensaje — ver procesarConsultaNatural más abajo — así que ampliar esta
+// lista nunca puede "tapar" una consulta real de un huésped.
 function nlqRespuestaConversacional(t) {
   if (/gracias/.test(t)) return _nlqPick(NLQ_CHARLA.gracias);
   if (/quien (sos|eres)|que sos\b|sos (un |una )?(bot|ia)\b|eres (un |una )?(bot|ia)\b|\brobot\b/.test(t)) return _nlqPick(NLQ_CHARLA.identidad);
   if (/de donde (sos|eres)|donde vivis|donde naciste/.test(t)) return _nlqPick(NLQ_CHARLA.origen);
   if (/\bclima\b|el tiempo esta|va a llover|hace frio|hace calor/.test(t)) return _nlqPick(NLQ_CHARLA.clima);
+  if (/\bchau\b|nos vemos|hasta luego|hasta pronto|^adios\b|^adios$|\bbye\b/.test(t)) return _nlqPick(NLQ_CHARLA.despedida);
+  if (/contame un chiste|hace(s)? chistes?|sabes algun chiste|decime un chiste|\bchiste\b/.test(t)) return _nlqPick(NLQ_CHARLA.chiste);
+  if (/cuantos anos tenes|cuantos anos tienes|que edad tenes|que edad tienes/.test(t)) return _nlqPick(NLQ_CHARLA.edad);
+  if (/que te gusta|cual es tu comida favorita|tenes hobbies|que haces en tu tiempo libre|tu pasatiempo/.test(t)) return _nlqPick(NLQ_CHARLA.gustos);
+  if (/sos genial|sos un capo|sos groso|te quiero|que crack|sos el mejor|sos una maquina/.test(t)) return _nlqPick(NLQ_CHARLA.cumplido);
+  if (/^jaja+j?a*$|^jeje+j?e*$|^jsjs+j?s*$|^lol\b|que aburrido|estoy aburrido|me aburro/.test(t)) return _nlqPick(NLQ_CHARLA.risa);
+  if (/que hora es|sabes que hora es|tenes hora\b/.test(t)) return _nlqPick(NLQ_CHARLA.hora);
+  if (/^dale$|^ok$|^okay$|^genial$|^perfecto$|^buenisimo$|^listo$|^barbaro$/.test(t)) return _nlqPick(NLQ_CHARLA.afirmacion);
+  if (/estas ahi|me escuchas|hay alguien|sigues ahi/.test(t)) return _nlqPick(NLQ_CHARLA.presente);
+  if (/turno pesado|que cansador|estoy cansad|turno largo|dia largo|que largo el turno/.test(t)) return _nlqPick(NLQ_CHARLA.animo);
+  if (/\bmate\b|unos mates|tomamos unos mates/.test(t)) return _nlqPick(NLQ_CHARLA.mate);
+  if (/tenes hambre|que comiste|se te antoja|comida favorita|que te gusta comer/.test(t)) return _nlqPick(NLQ_CHARLA.comida);
+  if (/hablame de vos|contame algo|dale charlemos|charlemos|hagamos charla|dame charla/.test(t)) return _nlqPick(NLQ_CHARLA.charla_general);
   if (/como estas|como andas|que tal\??$|todo bien\??$|como te va|como va\b|^hola\b|^buenas\b|^buen dia\b/.test(t)) return _nlqPick(NLQ_CHARLA.saludo);
   return null;
 }
@@ -3274,7 +3486,7 @@ function procesarConsultaNatural() {
   if (!sec) {
     var charla = nlqRespuestaConversacional(t);
     if (charla) { nlqFeedback(charla, 'chat'); $('nlq-input').value = ''; return; }
-    nlqFeedback('Mmm, no estoy seguro de haber entendido 😅 Probá con algo como "doble para el 10 y 11 de octubre" o pedime "disponibilidad", "servicios", "check-in", "cancelación" o "ubicación".', 'err');
+    nlqFeedback(_nlqPick(NLQ_NO_ENTENDI), 'err');
     return;
   }
   try {
@@ -3293,28 +3505,58 @@ function procesarConsultaNatural() {
   }
 }
 // ============================================================
-// CHAT FLOTANTE DE COPITO (abrir/cerrar el panel de consulta que
-// cuelga del mascota, en vez de mostrar/ocultar por hover: un input de
-// texto necesita poder mantenerse abierto aunque el mouse salga de la
-// zona del avatar mientras se escribe).
+// CHAT FLOTANTE DE COPAHUITO: aparece/desaparece solo con pasar el mouse
+// por encima del flotante (mascotHoverShow/mascotHoverHideMaybe), y si se
+// hace click en la cara queda "fijado" en pantalla (mascotChatPinned)
+// hasta que se vuelva a hacer click en la cara o se cierre con la X
+// (closeMascotChatFully) — así se puede escribir la consulta sin que el
+// panel se cierre solo al mover el mouse.
 // ============================================================
-function toggleMascotChat(force) {
+var mascotChatPinned = false;
+var _mascotHoverCloseTimer = null;
+function openMascotChat() {
   var panel = $('mascot-chat');
-  if (!panel) return;
-  var abrir = typeof force === 'boolean' ? force : !panel.classList.contains('open');
-  panel.classList.toggle('open', abrir);
-  if (abrir) {
+  if (panel) panel.classList.add('open');
+}
+function closeMascotChat() {
+  var panel = $('mascot-chat');
+  if (panel) panel.classList.remove('open');
+}
+function mascotHoverShow() {
+  clearTimeout(_mascotHoverCloseTimer);
+  openMascotChat();
+}
+function mascotHoverHideMaybe() {
+  clearTimeout(_mascotHoverCloseTimer);
+  _mascotHoverCloseTimer = setTimeout(function () {
+    if (!mascotChatPinned) closeMascotChat();
+  }, 150);
+}
+function toggleMascotChatPin() {
+  mascotChatPinned = !mascotChatPinned;
+  if (mascotChatPinned) {
+    openMascotChat();
     nlqFeedback('', '');
     setTimeout(function(){ var ta=$('nlq-input'); if (ta) ta.focus(); }, 80);
-    document.addEventListener('click', _mascotChatOutsideClick, true);
   } else {
-    document.removeEventListener('click', _mascotChatOutsideClick, true);
+    closeMascotChat();
   }
 }
-function _mascotChatOutsideClick(e) {
-  var mascot = $('mascot');
-  if (mascot && !mascot.contains(e.target)) toggleMascotChat(false);
+function closeMascotChatFully() {
+  mascotChatPinned = false;
+  clearTimeout(_mascotHoverCloseTimer);
+  closeMascotChat();
 }
+// Si el chat está abierto (fijado con click o no) y se hace click en
+// cualquier parte de afuera del flotante, se cierra.
+document.addEventListener('click', function (e) {
+  var panel = $('mascot-chat');
+  var mascot = $('mascot');
+  if (!panel || !mascot) return;
+  if (!panel.classList.contains('open')) return;
+  if (mascot.contains(e.target)) return;
+  closeMascotChatFully();
+}, true);
 // ============================================================
 // TECLA ENTER → GENERAR RESPUESTA
 // ============================================================
